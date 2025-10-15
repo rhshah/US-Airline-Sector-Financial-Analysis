@@ -1,0 +1,248 @@
+---
+title: "United Airlines (UAL) Financial Analysis"
+---
+
+As a premier global legacy carrier, United Airlines' financial performance serves as a crucial barometer for the health of the entire airline industry. Its vast network and exposure to international and business travel make its recovery from the 2020 downturn a key case study in sector resilience. This section performs a time-series analysis of UAL's profitability, financial health, and cash flow sustainability from 2020 through the end of fiscal year 2024.
+
+
+```{r include=FALSE}
+#| label: ual-setup
+#| echo: false
+#| message: false
+#| warning: false
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyquant)
+library(rvest)
+library(tidyverse)
+library(tidyfinance)
+library(scales)
+library(ggrepel)
+library(fmpapi)
+library(ggthemr)
+library(plotly)
+```
+```{r, include=FALSE}
+#| label: ual-load-data
+#| echo: false
+#| message: false
+#| warning: false
+# Load UAL financial data from FMP API
+# Load balance sheet data
+ual_balance_sheet <- fmp_get(
+  resource = "balance-sheet-statement", 
+  symbol = "UAL", 
+  params = list(period = "quarter", limit = 23)
+)
+# Load income statement data
+ual_income_statement <- fmp_get(
+  resource = "income-statement", 
+  symbol = "UAL", 
+  params = list(period = "quarter", limit = 23)
+)
+# Load cash flow statement data
+ual_cash_flow_statement <- fmp_get(
+  resource = "cash-flow-statement", 
+  symbol = "UAL", 
+  params = list(period = "quarter", limit = 23)
+)
+# Get historical market capitalization
+ual_historical_mkt_cap <- fmp_get(
+  resource = "historical-market-capitalization",
+  symbol = "UAL",
+  params = list(from = "2020-01-01", to = "2025-10-31")
+)
+# Get company profile
+ual_profile <- fmp_get(
+  resource = "profile", symbol = "UAL"
+)
+
+# Search for stock information
+ual_stock_information <- fmp_get(
+  resource = "search", params = list(query = "UAL")
+)
+```
+
+## Market Capitalization Recovery
+
+United's market capitalization trajectory mirrors the broader industry's rollercoaster ride through the pandemic. The precipitous drop in early 2020 reflects the immediate shock to air travel demand, while the subsequent recovery highlights investor confidence in UAL's strategic initiatives and the overall rebound of the airline sector.
+
+```{r}
+#| label: ual-mkt-cap
+#| fig.cap: "United Airlines (UAL) Historical Market Capitalization (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ual_historical_mkt_cap <- ual_historical_mkt_cap %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+ggthemr("flat")
+p0 <- ggplot(ual_historical_mkt_cap, aes(x = date, y = market_cap)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "United Airlines (UAL) Historical Market Capitalization (2020-2024)",
+       x = "Date",
+       y = "Market Capitalization (in Millions)") +
+  theme_minimal()
+ggplotly(p0)
+```
+
+## Income Sustainability and Recovery
+
+### Profitability Analysis
+
+United's income statement reflects a dramatic V-shaped recovery. After a staggering loss in 2020, the airline saw revenues climb aggressively, surpassing pre-pandemic levels by 2023. This top-line momentum translated into a powerful return to profitability.
+
+```{r}
+#| label: ual-profitability
+#| fig.cap: "United Airlines (UAL) Quarterly Revenue and Net Income (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ual_income_statement <- ual_income_statement %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+ggthemr("flat")
+p1 <- ggplot(ual_income_statement, aes(x = date)) +
+  geom_line(aes(y = revenue, color = "Revenue"), size = 1.2) +
+  geom_line(aes(y = net_income, color = "Net Income"), size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "United Airlines (UAL) Quarterly Revenue and Net Income (2020-2024)",
+       x = "Date",
+       y = "Amount (in Millions)",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p1)
+```
+
+### Margin Analysis
+
+The operating margin collapse to -62.6% in 2020 quantifies the devastating impact of the pandemic on UAL's core operations. The recovery was swift; by 2022, UAL had achieved a strong 11.1% operating margin and positive net income. The return to double-digit operating margins in 2024 underscores the success of its strategy to focus on premium, international, and business travel, which command higher yields and have seen robust post-pandemic demand.
+
+```{r}
+#| label: ual-margins
+#| fig.cap: "United Airlines (UAL) Quarterly Operating and Net Margins (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ual_income_statement <- ual_income_statement %>%
+  mutate(operating_margin = operating_income / revenue,
+         net_margin = net_income / revenue)
+p2 <- ggplot(ual_income_statement, aes(x = date)) +
+  geom_line(aes(y = operating_margin, color = "Operating Margin"), size = 1.2) +
+  geom_line(aes(y = net_margin, color = "Net Margin"), size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  labs(title = "United Airlines (UAL) Quarterly Operating and Net Margins (2020-2024)",
+       x = "Date",
+       y = "Margin",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p2)
+```
+
+## Balance Sheet Health and Leverage
+
+UAL's balance sheet underwent significant stress and subsequent repair during this period. The company took on substantial debt to navigate the pandemic, but has since focused on de-leveraging.
+
+```{r}
+#| label: ual-balance-sheet
+#| fig.cap: "United Airlines (UAL) Quarterly Total Assets, Debt and Equity (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ual_balance_sheet <- ual_balance_sheet %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+p3 <- ggplot(ual_balance_sheet, aes(x = date)) +
+  geom_line(aes(y = total_assets, color = "Total Assets"), size = 1.2) +
+  geom_line(aes(y = total_debt, color = "Total Debt"), size = 1.2) +
+  geom_line(aes(y = total_equity, color = "Total Equity"), size = 1.2) +
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "United Airlines (UAL) Quarterly Total Assets, Debt and Equity (2020-2024)",
+       x = "Date",
+       y = "Amount (in Millions)",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p3)
+```
+
+### Debt-to-Equity Ratio Trend
+
+The evolution of UAL's capital structure is stark. The Debt-to-Equity ratio (Total Liabilities / Total Equity) peaked in 2022 at over 18, indicating extreme financial risk. However, driven by retained earnings, the equity base has more than doubled from its 2021 low, and the Debt-to-Equity ratio has been systematically reduced to a more manageable, though still high, 4.7 by year-start 2025. This trend of strengthening the balance sheet is a critical component of its long-term strategy.
+
+```{r}
+#| label: ual-debt-equity
+#| fig.cap: "United Airlines (UAL) Quarterly Debt-to-Equity Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ual_balance_sheet <- ual_balance_sheet %>%
+  mutate(debt_to_equity = total_liabilities / total_equity)
+p4 <- ggplot(ual_balance_sheet, aes(x = date, y = debt_to_equity)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = comma_format(accuracy = 0.1)) +
+  labs(title = "United Airlines (UAL) Quarterly Debt-to-Equity Ratio (2020-2024)",
+       x = "Date",
+       y = "Debt-to-Equity Ratio") +
+  theme_minimal()
+ggplotly(p4)
+```
+
+## Cash Flow Quality and Sustainability
+
+A key measure of an airline's health is its ability to generate cash internally. The comparison between Net Income and Cash from Operating Activities (CFO) reveals the quality of UAL's earnings.
+
+The data shows a generally positive relationship between earnings and cash flow, particularly in 2022 and 2024 where CFO exceeded net income, a sign of high-quality earnings. However, the negative CFO in 2023, despite positive net income, suggests a significant cash drain from working capital, likely related to the timing of accrued liabilities or a build-up in receivables. 
+
+
+```{r}
+#| label: ual-cash-flow
+#| fig.cap: "United Airlines (UAL) Quarterly Net Income and Cash from Operating Activities (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ual_cash_flow_statement <- ual_cash_flow_statement %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+p5 <- ggplot(ual_cash_flow_statement, aes(x = date)) +
+  geom_line(aes(y = net_income, color = "Net Income"), size = 1.2) +
+  geom_line(aes(y = operating_cash_flow, color = "Cash from Operations"), size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "United Airlines (UAL) Quarterly Net Income and Cash from Operating Activities (2020-2024)",
+       x = "Date",
+       y = "Amount (in Millions)",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p5)
+```
+
+### Free Cash Flow Trend
+
+The free cash flow (FCF) trend further illustrates the capital-intensive nature of UAL's business. The negative FCF in most quarters underscores the airline's heavy investment in fleet modernization and expansion, which is critical for maintaining competitive advantage but also places pressure on liquidity. The consistent negative FCF (except for 2024) highlights its intense capital expenditure cycle, making sustained operational cash generation essential to fund its growth ambitions.
+
+```{r}
+#| label: ual-fcf
+#| fig.cap: "United Airlines (UAL) Quarterly Free Cash Flow (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+p6 <- ggplot(ual_cash_flow_statement, aes(x = date, y = free_cash_flow)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  labs(title = "United Airlines (UAL) Quarterly Free Cash Flow (2020-2024)",
+       x = "Date",
+       y = "Free Cash Flow (in Millions)") +
+  theme_minimal()
+ggplotly(p6)
+```
+## Summary
+
+In summary, United Airlines has demonstrated a robust recovery from the pandemic-induced downturn, marked by a strong rebound in revenue and a return to profitability. The airline's strategic focus on premium travel segments has paid off, enabling it to achieve healthy operating margins. However, the balance sheet remains highly leveraged, and the capital-intensive nature of the business continues to pressure free cash flow. Moving forward, UAL's ability to sustain operational cash generation while managing its debt levels will be critical to its long-term financial health and competitive positioning in the evolving airline industry.
+

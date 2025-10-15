@@ -1,0 +1,77 @@
+project:
+  type: book
+  output-dir: docs
+
+editor: visual
+execute:
+  freeze: auto
+  
+book:
+  title: "US Airline Sector Financial Analysis"
+  subtitle: "An In-depth Look at Financial Metrics and Trends"
+  author: "Robert, Noberto, Riccardo & Ronak"
+  date: "2025-10-15"
+  bread-crumbs: false
+  repo-url: https://github.com/rhshah/US-Airline-Sector-Financial-Analysis
+  repo-branch: main
+  downloads: [docx, pdf]
+  sidebar:
+    style: "docked"
+    search: true
+    alignment: center
+    pinned: true
+  chapters:
+    - index.qmd
+    - about.qmd
+    - executive_summary.qmd
+    - part: "United Airlines (UAL)"
+      chapters:
+        - ual_financial_analysis.qmd
+    - part: "Jet Blue (JBLU)"
+      chapters:
+        - jblu_financial_analysis.qmd
+    - part: "SkyWest (SKYW)"
+      chapters:
+        - skyw_financial_analysis.qmd
+    - part: Comparative Analysis
+      chapters:
+        - comparative_financial_analysis.qmd
+    - references.qmd
+  description: "A comprehensive financial analysis of the US airline sector, exploring key metrics and trends."
+  page-footer: 
+    background: light
+    left: |
+      Copyright 2025, Ronak Shah @ CMO @ MSKCC
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>. 
+  page-navigation: true
+
+format:
+  pdf:
+    geometry: 
+      - top=30mm
+      - left=30mm
+  docx: default
+  html: 
+    code-link: true
+    theme:
+      light: flatly
+      dark: darkly
+    execute:
+      echo: false
+      warnings: false
+    toc: true
+    toc-title: "US Airline Sector Financial Analysis"
+    highlight-style: pygments
+    embed-resources: true
+    standalone: true
+    code-fold: true
+    html-math-method: katex
+    link_target: _self
+    gfm: default
+    tbl-cap-location: bottom
+    fig-cap-location: bottom
+    always_allow_html: true
+    comments:
+      hypothesis: 
+        theme: clean

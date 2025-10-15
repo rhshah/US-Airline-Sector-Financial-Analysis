@@ -1,0 +1,11 @@
+---
+title: "References"
+---
+
+This report leverages a variety of data sources and analytical tools to provide a comprehensive financial analysis of United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW). The primary data source for financial statements and market data is the Financial Modeling Prep (FMP) API, which offers extensive access to historical and current financial information for publicly traded companies.
+
+-   Financial Modeling Prep (FMP) API: <https://financialmodelingprep.com/developer/docs/>
+-   Tidyquant R Package: <https://business-science.github.io/tidyquant/>
+-   Tidyverse R Package: <https://www.tidyverse.org/>
+-   Tidyfinance R Package: <https://www.tidy-finance.org/r/financial-statement-analysis.html>
+-   ggthemr R Package

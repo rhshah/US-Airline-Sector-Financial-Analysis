@@ -1,0 +1,525 @@
+---
+title: "US Airline Sector Financial Analysis"
+author: "Robert, Riccardo, Noberto & Ronak"
+date: "2025-10-14"
+---
+
+# Introduction
+
+This blog explores the financial performance of selected airlines using various financial analysis techniques including time series, cross-sectional, and panel data analysis.
+
+This report provides a detailed comparative financial analysis of three distinct players in the U.S. airline industry: legacy carrier United Airlines (UAL), low-cost carrier JetBlue (JBLU), and regional operator SkyWest (SKW). Utilizing financial data from the beginning of 2020 through the end of fiscal year 2024, this study examines the post-pandemic recovery, financial health, profitability, and operational efficiency of each company. The strategic importance of this analysis lies in understanding the divergent recovery paths and competitive positioning that have emerged in a sector profoundly reshaped by recent global events.
+
+
+
+```{r setup, include=FALSE}
+#| echo: false
+#| message: false
+#| warning: false
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyquant)
+library(rvest)
+library(tidyverse)
+library(tidyfinance)
+library(scales)
+library(ggrepel)
+library(fmpapi)
+library(ggthemr)
+library(plotly)
+```
+
+## Data Collection
+
+We collected data using Financial Modeling Prep (FMP) API. You can get your free API key by signing up at https://financialmodelingprep.com/developer/docs/pricing/
+
+
+```{r get data, include=FALSE}
+#| echo: false
+#| message: false
+#| warning: false
+# Define the airline tickers
+airlines <- data.frame(
+  Airline = c(
+    "American Airlines Group Inc.",
+    "Delta Air Lines Inc.",
+    "United Airlines Holdings Inc.",
+    "Southwest Airlines Co.",
+    "Alaska Air Group Inc.",
+    "JetBlue Airways Corporation",
+    "Spirit Airlines Inc.",
+    "Allegiant Travel Company",
+    "SkyWest Inc.",
+    "Mesa Air Group Inc."
+  ),
+  Ticker = c(
+    "AAL",
+    "DAL",
+    "UAL",
+    "LUV",
+    "ALK",
+    "JBLU",
+    "SAVE",
+    "ALGT",
+    "SKYW",
+    "MESA"
+  ),
+  stringsAsFactors = FALSE
+)
+
+airline_tickers <- c("UAL", "JBLU", "SKYW")
+# Fetch financial statements for each airline
+params <- list(period = "quarter", limit = 23)
+
+balance_sheet_statements <- airlines$Ticker |> 
+  map_df(
+    \(x) fmp_get(resource = "balance-sheet-statement", symbol = x, params = params)
+  )
+
+income_statements <- airlines$Ticker |> 
+  map_df(
+    \(x) fmp_get(resource = "income-statement", symbol = x, params = params)
+  )
+
+cash_flow_statements <- airlines$Ticker |> 
+  map_df(
+    \(x) fmp_get(resource = "cash-flow-statement", symbol = x, params = params)
+  )
+
+
+```
+
+```{r liquidity-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+balance_sheet_statements <- balance_sheet_statements |> 
+  mutate(
+    current_ratio = total_current_assets / total_assets,
+    quick_ratio = (total_current_assets - inventory) / total_current_liabilities,
+    cash_ratio = cash_and_cash_equivalents / total_current_liabilities,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
+```
+
+## Liquidity Ratios
+
+```{r plot-liquidity-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+
+ggthemr("fresh")
+
+balance_sheet_statements |> 
+  filter(calendar_year == 2023 & !is.na(label)) |> 
+  select(symbol, contains("ratio")) |> 
+  pivot_longer(-symbol) |> 
+  mutate(name = str_to_title(str_replace_all(name, "_", " "))) |> 
+  ggplot(aes(x = value, y = name, fill = symbol)) +
+  geom_col(position = "dodge") +
+  scale_x_continuous(labels = percent) + 
+  labs(
+    x = NULL, y = NULL, fill = NULL,
+    title = "Liquidity ratios for UAL, JBLU and SKYW (2023)",
+    subtitle = "Current ratio, Quick ratio and Cash ratio",
+    caption = "Source: Financial Modeling Prep (FMP) API"
+  )
+```
+
+```{r leverage-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+balance_sheet_statements <- balance_sheet_statements |> 
+  mutate(
+    debt_to_equity = total_debt / total_equity,
+    debt_to_asset = total_debt / total_assets
+  )
+
+income_statements <- income_statements |> 
+  mutate(
+    interest_coverage = operating_income / interest_expense,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
+```
+## Leverage Ratios
+```{r plot-leverage-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+##| fig-cap: ["Debt-to-Asset Ratio for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Debt-to-Equity Ratio for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"]
+#| layout-nrow: 2
+ggthemr("fresh")
+balance_sheet_statements <- balance_sheet_statements %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+income_statements <- income_statements %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+cash_flow_statements <- cash_flow_statements %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+
+# Create the plot
+p <- ggplot() +
+  # Add points for quarterly data
+  geom_point(data = balance_sheet_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = debt_to_asset, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = balance_sheet_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = debt_to_asset, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) +
+  labs(
+    x = "Year and Quarter", y = NULL, color = NULL,
+    title = "Debt-to-Asset Ratios for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)",
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p <- ggplot() +
+  # Add points for quarterly data
+  geom_point(data = balance_sheet_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = debt_to_equity, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = balance_sheet_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = debt_to_equity, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) +
+  labs(
+    x = "Year and Quarter", y = NULL, color = NULL,
+    title = "Debt-to-Equity Ratios for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)",
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(p)
+```
+
+## Cross-Sectional Analysis of Debt to Asset Ratio in 2024
+```{r cross-sectional view of debt-to-asset ratio in 2024}
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("fresh")
+selected_colors <- c("#8bc2d1", "#5a6c72", "#ee7474", "lightgrey")
+
+balance_sheet_statements |> 
+  filter(calendar_year == 2024) |> 
+  ggplot(
+    aes(x = debt_to_asset, y = fct_reorder(symbol, debt_to_asset), fill = label)
+  ) +
+  geom_col() +
+  scale_x_continuous(labels = percent) +
+  scale_fill_manual(values = selected_colors) +
+  labs(
+    x = NULL, y = NULL, color = NULL,
+    title = "Debt-to-asset ratios of US Airline Sector Companies in 2024"
+  ) + 
+  theme(legend.position = "none")
+
+income_statements |> 
+  filter(calendar_year == 2024) |> 
+  select(symbol, interest_coverage, calendar_year) |> 
+  left_join(
+    balance_sheet_statements,
+    join_by(symbol, calendar_year)
+  ) |> 
+  ggplot(aes(x = debt_to_asset, y = interest_coverage, color = label)) +
+  geom_point(size = 2) +
+  scale_x_continuous(labels = percent) +
+  scale_y_continuous(labels = percent) +
+  scale_color_manual(values = selected_colors) +
+  labs(
+    x = "Debt-to-Asset", y = "Interest Coverage",
+    title = "Debt-to-asset ratios and interest coverages for  US Airline Sector Companies in 2024"
+  ) +
+  theme(legend.position = "none")
+```
+## Efficiency and Profitability Ratios
+```{r efficiency-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+combined_statements <- balance_sheet_statements |> 
+  select(symbol, year_quarter, label, current_ratio, quick_ratio, cash_ratio,
+         debt_to_equity, debt_to_asset, total_assets, total_equity, net_receivables) |> 
+  left_join(
+    income_statements |> 
+      select(symbol, year_quarter, interest_coverage, revenue, cost_of_revenue,
+             selling_general_and_administrative_expenses, interest_expense,
+             gross_profit, net_income),
+    join_by(symbol, year_quarter)
+  ) |> 
+  left_join(
+    cash_flow_statements |> 
+      select(symbol, year_quarter, inventory, accounts_receivables),
+     join_by(symbol, year_quarter)
+  )
+
+combined_statements <- combined_statements |> 
+  mutate(
+    asset_turnover = ifelse(total_assets == 0, 0, revenue / total_assets),
+    inventory_turnover = ifelse(inventory == 0, 0, cost_of_revenue / inventory),
+    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables)
+  )
+combined_statements <- combined_statements %>%
+  # Calculate average accounts receivable and average receivables turnover
+  mutate(
+        # Average Total Assets
+    average_total_assets = (lag(total_assets) + total_assets) / 2,
+    
+    # Return on Assets
+    return_on_assets = (net_income + (interest_expense * (1- 0.21))) / average_total_assets,
+    
+    # Total Asset Turnover
+    total_asset_turnover = revenue / average_total_assets,
+    
+    
+    # Return on Common Equity
+    return_on_common_equity = net_income / (lag(total_equity) + total_equity) / 2,
+    
+    # Capital Structure Leverage Ratio
+    capital_structure_leverage_ratio = average_total_assets / (lag(total_equity) + total_equity) / 2,
+    
+    # Common Earnings Leverage Ratio
+    common_earnings_leverage_ratio = net_income / (net_income + interest_expense * (1 - 0.21)),
+    
+    
+    # Calculate average accounts receivable
+    average_accounts_receivable = (lag(net_receivables) + net_receivables) / 2,
+    
+    # Calculate average receivables turnover
+    average_receivables_turnover = ifelse (average_accounts_receivable == 0, 0, revenue / average_accounts_receivable)
+  )
+```
+### ROA ROE
+```{r plot-roa-roe}
+#| echo: false
+#| message: false
+#| warning: false
+##| fig-cap: ["Return on Assets for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Return on Equity for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"]
+#| layout-nrow: 2
+ggthemr("fresh")
+# Create the plot
+p <- ggplot() +
+  # Add points for ROA data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = return_on_assets, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = return_on_assets, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Return on Assets for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p <- ggplot() +
+  # Add points for ROE data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = return_on_common_equity, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = return_on_common_equity, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Return on Equity for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+ggplotly(p)
+```
+### Capital Structure Leverage and Common Earnings Leverage
+```{r plot-capital-structure-leverage-common-earnings-leverage}
+#| echo: false
+#| message: false
+#| warning: false
+##| fig-cap: ["Capital Structure Leverage Ratio for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Common Earnings Leverage Ratio for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"]
+#| layout-nrow: 2
+ggthemr("fresh")
+# Create the plot
+p <- ggplot() +
+  # Add points for capital structure leverage ratio data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = capital_structure_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = capital_structure_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Capital Structure Leverage Ratio for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p <- ggplot() +
+  # Add points for common earnings leverage ratio data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = common_earnings_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = common_earnings_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Common Earnings Leverage Ratio for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+```
+
+### Efficiency Ratios Over Time
+```{r plot-efficiency-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+##| fig-cap: ["Asset Turnover for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Inventory Turnover for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Receivables Turnover for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"]
+#| layout-nrow: 3
+ggthemr("fresh")
+# Create the plot
+p <- ggplot() +
+  # Add points for asset turnover data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = asset_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = asset_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Asset Turnover for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p <- ggplot() +
+  # Add points for inventory turnover data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = inventory_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = inventory_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Inventory Turnover for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p <- ggplot() +
+  # Add points for receivables turnover data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = average_receivables_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = average_receivables_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Receivables Turnover for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+```
+
+```{r profitability-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+combined_statements <- combined_statements |> 
+  mutate(
+    gross_margin = ifelse(revenue == 0, 0, gross_profit / revenue),
+    profit_margin = ifelse(revenue == 0, 0, (net_income + (interest_expense * (1-0.21))) / revenue),
+    after_tax_roe = ifelse(total_equity == 0, 0, net_income / total_equity)
+  )
+```
+### Profitability Ratios Over Time
+```{r plot-profitability-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+##| fig-cap: ["Gross Margins for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Profit Margins for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Return on Equity for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"]
+#| layout-nrow: 3
+ggthemr("fresh")
+
+# Create the plot
+p <- ggplot() +
+  # Add points for gross margin data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = gross_margin, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = gross_margin, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Gross Margins for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p<-ggplot() +
+  # Add points for gross margin data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = profit_margin, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = profit_margin, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Profit Margins for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+# Create the plot
+p <- ggplot() +
+  # Add points for gross margin data
+  geom_point(data = combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = after_tax_roe, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = after_tax_roe, group = symbol, color = symbol), 
+            linewidth = 1) +
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "After Tax ROE for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p)
+
+```
+

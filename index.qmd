@@ -1,0 +1,12 @@
+---
+description-meta: |
+  This quarto book explores the financial performance of selected airlines using various financial analysis techniques including time series, cross-sectional, and panel data analysis.
+---
+
+## Welcome {.unnumbered}
+
+This quarto book explores the financial performance of selected airlines using various financial analysis techniques including time series, cross-sectional, and panel data analysis. 
+
+## License {.unnumbered}
+
+This website is (and will always be) **free to use**, and is licensed under the [Creative Commons Attribution-NonCommercial-NoDerivs 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) License.

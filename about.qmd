@@ -1,0 +1,5 @@
+---
+title: "Introduction"
+---
+
+This report provides a detailed comparative financial analysis of three distinct players in the U.S. airline industry: legacy carrier United Airlines (UAL), low-cost carrier JetBlue (JBLU), and regional operator SkyWest (SKW). Utilizing financial data from the beginning of 2020 through the end of fiscal year 2024, this study examines the post-pandemic recovery, financial health, profitability, and operational efficiency of each company. The strategic importance of this analysis lies in understanding the divergent recovery paths and competitive positioning that have emerged in a sector profoundly reshaped by recent global events.

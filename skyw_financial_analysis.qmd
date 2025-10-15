@@ -1,0 +1,247 @@
+---
+title: "SkyWest (SKYW) Financial Analysis"
+---
+
+SkyWest, Inc. operates under a unique and resilient business model as a regional carrier, providing flight services under contract for major airline partners like United Airlines. This structure insulates it from certain risks, such as direct fuel price and ticketing volatility, that mainline carriers face. Its financial performance, therefore, offers a distinct and valuable perspective on the U.S. airline sector. This section will analyze SkyWest's financial statements from 2020 through the end of fiscal year 2024.
+
+
+```{r, include=FALSE}
+#| label: skyw-setup
+#| echo: false
+#| message: false
+#| warning: false
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyquant)
+library(rvest)
+library(tidyverse)
+library(tidyfinance)
+library(scales)
+library(ggrepel)
+library(fmpapi)
+library(ggthemr)
+library(plotly)
+```
+```{r, include=FALSE}
+#| label: skyw-load-data
+#| echo: false
+#| message: false
+#| warning: false
+# Load SKYW financial data from FMP API
+# Load balance sheet data
+skyw_balance_sheet <- fmp_get(
+  resource = "balance-sheet-statement", 
+  symbol = "SKYW", 
+  params = list(period = "quarter", limit = 23)
+)
+# Load income statement data
+skyw_income_statement <- fmp_get(
+  resource = "income-statement", 
+  symbol = "SKYW", 
+  params = list(period = "quarter", limit = 23)
+)
+# Load cash flow statement data
+skyw_cash_flow_statement <- fmp_get(
+  resource = "cash-flow-statement", 
+  symbol = "SKYW", 
+  params = list(period = "quarter", limit = 23)
+)
+# Get historical market capitalization
+skyw_historical_mkt_cap <- fmp_get(
+  resource = "historical-market-capitalization",
+  symbol = "SKYW",
+  params = list(from = "2020-01-01", to = "2025-10-31")
+)
+# Get company profile
+skyw_profile <- fmp_get(
+  resource = "profile", symbol = "SKYW"
+)
+
+# Search for stock information
+skyw_stock_information <- fmp_get(
+  resource = "search", params = list(query = "SKYW")
+)
+```
+
+## Market Capitalization Trend
+
+SkyWest's market capitalization trajectory from 2020 to 2024 reflects its resilience and strategic positioning in the airline industry. The company's market cap experienced a significant dip during the initial phase of the COVID-19 pandemic in early 2020, mirroring the broader industry downturn. However, unlike many mainline carriers, SkyWest's recovery was relatively swift and steady, underscoring the strength of its regional carrier model and its contracts with major airlines.
+
+```{r}
+#| label: skyw-mkt-cap
+#| fig.cap: "SkyWest (SKYW) Historical Market Capitalization (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+skyw_historical_mkt_cap <- skyw_historical_mkt_cap %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+ggthemr("flat")
+p0 <- ggplot(skyw_historical_mkt_cap, aes(x = date, y = market_cap)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "SkyWest (SKYW) Historical Market Capitalization (2020-2024)",
+       x = "Date",
+       y = "Market Capitalization (in Millions)") +
+  theme_minimal()
+ggplotly(p0)
+```
+
+## Income Statement and Profitability
+
+### Profitability Analysis
+
+SkyWest's capacity-purchase business model provides a foundation for more stable and predictable revenue streams compared to its mainline counterparts.
+
+```{r}
+#| label: skyw-profitability
+#| fig.cap: "SkyWest (SKYW) Quarterly Revenue and Net Income (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+skyw_income_statement <- skyw_income_statement %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+ggthemr("flat")
+p1 <- ggplot(skyw_income_statement, aes(x = date)) +
+  geom_line(aes(y = revenue, color = "Revenue"), size = 1.2) +
+  geom_line(aes(y = net_income, color = "Net Income"), size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "SkyWest (SKYW) Quarterly Revenue and Net Income (2020-2024)",
+       x = "Date",
+       y = "Amount (in Millions)",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p1)
+```
+
+### Margin Analysis
+
+SkyWest's profitability demonstrates remarkable consistency despite industry-wide turmoil. The stability of its results stems from its capacity purchase agreements with major carriers. These fixed-fee and cost-plus contracts largely insulate SkyWest from passenger demand risk and fuel price volatility, which are the primary sources of margin volatility for mainline carriers. While it posted modest losses in 2020 and 2022, it maintained positive operating income in other years, culminating in a very strong 15% operating margin in 2024.
+
+
+```{r}
+#| label: skyw-margins
+#| fig.cap: "SkyWest (SKYW) Quarterly Operating and Net Margins (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+skyw_income_statement <- skyw_income_statement %>%
+  mutate(operating_margin = operating_income / revenue,
+         net_margin = net_income / revenue)
+p2 <- ggplot(skyw_income_statement, aes(x = date)) +
+  geom_line(aes(y = operating_margin, color = "Operating Margin"), size = 1.2) +
+  geom_line(aes(y = net_margin, color = "Net Margin"), size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  labs(title = "SkyWest (SKYW) Quarterly Operating and Net Margins (2020-2024)",
+       x = "Date",
+       y = "Margin",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p2)
+```
+
+## Balance Sheet Health and Leverage
+
+A core strength of SkyWest is its conservative financial management, resulting in a robust and low-leverage balance sheet.
+
+```{r}
+#| label: skyw-balance-sheet
+#| fig.cap: "SkyWest (SKYW) Quarterly Total Assets, Debt and Equity (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+skyw_balance_sheet <- skyw_balance_sheet %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+p3 <- ggplot(skyw_balance_sheet, aes(x = date)) +
+  geom_line(aes(y = total_assets, color = "Total Assets"), size = 1.2) +
+  geom_line(aes(y = total_debt, color = "Total Debt"), size = 1.2) +
+  geom_line(aes(y = total_equity, color = "Total Equity"), size = 1.2) +
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "SkyWest (SKYW) Quarterly Total Assets, Debt and Equity (2020-2024)",
+       x = "Date",
+       y = "Amount (in Millions)",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p3)
+```
+
+### Debt-to-Equity Ratio Trend
+
+SkyWest’s financial structure is exceptionally strong for an airline. Over the five-year period, its Net Debt to Equity ratio has steadily decreased from 2.3x to a very healthy 1.7x by the end of 2024. This consistent deleveraging, even through challenging years, provides SkyWest with significant financial resilience and a lower risk profile.
+
+```{r}
+#| label: skyw-debt-equity
+#| fig.cap: "SkyWest (SKYW) Quarterly Debt-to-Equity Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+skyw_balance_sheet <- skyw_balance_sheet %>%
+  mutate(debt_to_equity = total_liabilities / total_equity)
+p4 <- ggplot(skyw_balance_sheet, aes(x = date, y = debt_to_equity)) +
+  geom_line(size = 1.2) +
+  scale_y_continuous(labels = comma_format(accuracy = 0.1)) +
+  labs(title = "SkyWest (SKYW) Quarterly Debt-to-Equity Ratio (2020-2024)",
+       x = "Date",
+       y = "Debt-to-Equity Ratio") +
+  theme_minimal()
+ggplotly(p4)
+```
+
+## Cash Flow Qskywity and Sustainability
+
+SkyWest's operational efficiency is best illustrated by its consistent and strong cash flow generation.
+
+The analysis reveals a powerful and consistent ability to convert earnings (and even losses) into positive operating cash flow. In every single year, Cash from Operating Activities was significantly positive and substantially exceeded net income. This indicates very high-quality earnings and efficient working capital management. This operational strength translates directly to financial health. 
+
+```{r}
+#| label: skyw-cash-flow
+#| fig.cap: "SkyWest (SKYW) Quarterly Net Income and Cash from Operating Activities (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+skyw_cash_flow_statement <- skyw_cash_flow_statement %>%
+  mutate(date = as.Date(date)) %>%
+  arrange(date)
+p5 <- ggplot(skyw_cash_flow_statement, aes(x = date)) +
+  geom_line(aes(y = net_income, color = "Net Income"), size = 1.2) +
+  geom_line(aes(y = operating_cash_flow, color = "Cash from Operations"), size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "SkyWest (SKYW) Quarterly Net Income and Cash from Operating Activities (2020-2024)",
+       x = "Date",
+       y = "Amount (in Millions)",
+       color = "Legend") +
+  theme_minimal() +
+  theme(legend.position = "top")
+ggplotly(p5)
+```
+
+### Free Cash Flow Trend
+
+SkyWest’s return to positive free cash flow since 2022 demonstrates an ability to fund capital needs internally, a critical hallmark of a self-sustaining and healthy enterprise.
+
+```{r}
+#| label: skyw-fcf
+#| fig.cap: "SkyWest (SKYW) Quarterly Free Cash Flow (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+p6 <- ggplot(skyw_cash_flow_statement, aes(x = date, y = free_cash_flow)) +
+  geom_line(size = 1.2) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = dollar_format(scale = 1e-6, suffix = "M")) +
+  labs(title = "SkyWest (SKYW) Quarterly Free Cash Flow (2020-2024)",
+       x = "Date",
+       y = "Free Cash Flow (in Millions)") +
+  theme_minimal()
+ggplotly(p6)
+```
+## Summary
+
+In summary, SkyWest's financial analysis from 2020 to 2024 reveals a company that has not only weathered the unprecedented challenges of the pandemic but has emerged stronger and more resilient. Its unique business model as a regional carrier, combined with prudent financial management, has resulted in a robust balance sheet, consistent profitability, and strong cash flow generation. SkyWest's low leverage, stable margins, and ability to generate free cash flow position it well for future growth and stability in an industry that remains volatile and competitive. This analysis underscores SkyWest as a standout performer in the airline sector, demonstrating that strategic focus and operational efficiency can yield significant advantages even in challenging times.
