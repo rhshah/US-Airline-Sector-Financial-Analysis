@@ -12,7 +12,6 @@ JetBlue Airways occupies a competitive space between legacy carriers and ultra-l
 #| warning: false
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyquant)
-library(rvest)
 library(tidyverse)
 library(tidyfinance)
 library(scales)

@@ -12,7 +12,6 @@ As a premier global legacy carrier, United Airlines' financial performance serve
 #| warning: false
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyquant)
-library(rvest)
 library(tidyverse)
 library(tidyfinance)
 library(scales)

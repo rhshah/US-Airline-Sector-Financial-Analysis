@@ -12,7 +12,6 @@ SkyWest, Inc. operates under a unique and resilient business model as a regional
 #| warning: false
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyquant)
-library(rvest)
 library(tidyverse)
 library(tidyfinance)
 library(scales)

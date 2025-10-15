@@ -33,7 +33,7 @@ book:
     - part: "SkyWest (SKYW)"
       chapters:
         - skyw_financial_analysis.qmd
-    - part: Comparative Analysis
+    - part: "Comparative Analysis"
       chapters:
         - comparative_financial_analysis.qmd
     - references.qmd
@@ -47,11 +47,8 @@ book:
   page-navigation: true
 
 format:
-  pdf:
-    geometry: 
-      - top=30mm
-      - left=30mm
   docx: default
+  pdf: default
   html: 
     code-link: true
     theme:

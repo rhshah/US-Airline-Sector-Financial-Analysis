@@ -1,7 +1,5 @@
 ---
-title: "US Airline Sector Financial Analysis"
-author: "Robert, Riccardo, Noberto & Ronak"
-date: "2025-10-14"
+title: "Comparative Financial Analysis"
 ---
 
 # Introduction
@@ -18,7 +16,6 @@ This report provides a detailed comparative financial analysis of three distinct
 #| warning: false
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyquant)
-library(rvest)
 library(tidyverse)
 library(tidyfinance)
 library(scales)
