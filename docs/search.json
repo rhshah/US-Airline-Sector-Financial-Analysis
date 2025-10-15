@@ -30,265 +30,265 @@
     ]
   },
   {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "2  References",
+    "section": "",
+    "text": "This report leverages a variety of data sources and analytical tools to provide a comprehensive financial analysis of United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW). The primary data source for financial statements and market data is the Financial Modeling Prep (FMP) API, which offers extensive access to historical and current financial information for publicly traded companies.\n\nFinancial Modeling Prep (FMP) API: https://financialmodelingprep.com/developer/docs/\nTidyquant R Package: https://business-science.github.io/tidyquant/\nTidyverse R Package: https://www.tidyverse.org/\nTidyfinance R Package: https://www.tidy-finance.org/r/financial-statement-analysis.html\nggthemr R Package",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>References</span>"
+    ]
+  },
+  {
     "objectID": "executive_summary.html",
     "href": "executive_summary.html",
-    "title": "2  Executive Summary",
+    "title": "3  Executive Summary",
     "section": "",
     "text": "The industry-wide data reveals a clear trajectory from the severe operational and financial downturn of 2020 towards a sustained, albeit uneven, recovery. Revenue across all three carriers collapsed during the pandemic’s initial phase, leading to significant net losses. However, the subsequent years show a strong rebound in top-line growth, with United Airlines leading in sheer scale. Profitability has been slower to recover, hampered by volatile fuel costs and labor expenses. The analysis highlights that while revenue has largely normalized, the quality of earnings and the strength of balance sheets remain key differentiators among competitors.\nThe single most important insight from this comparative analysis is that SkyWest (SKW) demonstrates the most resilient and strategically advantageous financial profile. While United’s recovery in scale is impressive, SkyWest’s strength is rooted in its fundamental stability. This conclusion is supported by its superior balance sheet health, exemplified by a Net Debt-to-Equity ratio of just 81% in 2024, compared to UAL’s significantly higher 151%. Furthermore, SkyWest has generated consistent positive free cash flow annually since 2022, a feat JetBlue has not accomplished. This combination of low leverage and reliable internal cash generation positions SkyWest exceptionally well to navigate future market uncertainties and capitalize on opportunities without being constrained by financial distress.\nThe following table offers a high-level summary of each airline’s performance profile based on the detailed analysis within this report.\n\nHigh-level summary of each airline’s performance\n\n\n\n\n\n\n\n\nPerformance Category\nUnited Airline (UAL)\nJet Blue (JBLU)\nSkyWest (SKYW)\n\n\n\n\nFinancial Health\nExhibited significant deleveraging since 2021, though the balance sheet remains highly leveraged. Liquidity is strong.\nLeverage has increased steadily, reflecting persistent net losses and strategic investments, posing a risk to financial stability.\nMaintained a consistently conservative and strong balance sheet with the lowest leverage, providing significant financial flexibility.\n\n\nProfitability\nAchieved a robust revenue recovery and returned to strong profitability by 2023, with solid operating and net margins in 2024.\nStruggled to achieve consistent profitability, posting net losses in four of the last five years and demonstrating weak margin performance.\nDemonstrated stable, positive operating margins throughout the period, with consistent net profitability since 2023.\n\n\nOperational Efficiency\nGenerated powerful operating cash flows post-2021, though free cash flow has been volatile due to high capital expenditures.\nCash flow from operations has been inconsistent and often failed to cover net losses, resulting in consistently negative free cash flow.\nProduced remarkably stable and positive operating and free cash flows, showcasing a highly efficient and resilient business model.\n\n\nStock Recommendation\nHold\nSell\nBuy & Hold\n\n\n\nIn conclusion, the U.S. airline sector presents a landscape of varied financial fortitude. United Airlines has successfully leveraged its scale to drive a powerful earnings recovery. JetBlue faces significant headwinds in its pursuit of sustainable profitability and balance sheet repair. SkyWest, with its distinct regional operating model, has emerged from the turbulent five-year period with the most durable and well-positioned financial structure, setting the stage for a stable long-term outlook.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Executive Summary</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Executive Summary</span>"
     ]
   },
   {
     "objectID": "ual_financial_analysis.html",
     "href": "ual_financial_analysis.html",
-    "title": "\n3  United Airlines (UAL) Financial Analysis\n",
+    "title": "\n4  United Airlines (UAL) Financial Analysis\n",
     "section": "",
-    "text": "3.1 Market Capitalization Recovery\nAs a premier global legacy carrier, United Airlines’ financial performance serves as a crucial barometer for the health of the entire airline industry. Its vast network and exposure to international and business travel make its recovery from the 2020 downturn a key case study in sector resilience. This section performs a time-series analysis of UAL’s profitability, financial health, and cash flow sustainability from 2020 through the end of fiscal year 2024.\nUnited’s market capitalization trajectory mirrors the broader industry’s rollercoaster ride through the pandemic. The precipitous drop in early 2020 reflects the immediate shock to air travel demand, while the subsequent recovery highlights investor confidence in UAL’s strategic initiatives and the overall rebound of the airline sector.\nUnited Airlines (UAL) Historical Market Capitalization (2020-2024)",
+    "text": "4.1 Market Capitalization Recovery\nAs a premier global legacy carrier, United Airlines’ financial performance serves as a crucial barometer for the health of the entire airline industry. Its vast network and exposure to international and business travel make its recovery from the 2020 downturn a key case study in sector resilience. This section performs a time-series analysis of UAL’s profitability, financial health, and cash flow sustainability from 2020 through the end of fiscal year 2024.\nUnited’s market capitalization trajectory mirrors the broader industry’s rollercoaster ride through the pandemic. The precipitous drop in early 2020 reflects the immediate shock to air travel demand, while the subsequent recovery highlights investor confidence in UAL’s strategic initiatives and the overall rebound of the airline sector.\nUnited Airlines (UAL) Historical Market Capitalization (2020-2024)",
     "crumbs": [
       "United Airlines (UAL)",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "ual_financial_analysis.html#income-sustainability-and-recovery",
     "href": "ual_financial_analysis.html#income-sustainability-and-recovery",
-    "title": "\n3  United Airlines (UAL) Financial Analysis\n",
-    "section": "\n3.2 Income Sustainability and Recovery",
-    "text": "3.2 Income Sustainability and Recovery\n\n3.2.1 Profitability Analysis\nUnited’s income statement reflects a dramatic V-shaped recovery. After a staggering loss in 2020, the airline saw revenues climb aggressively, surpassing pre-pandemic levels by 2023. This top-line momentum translated into a powerful return to profitability.\n\n\n\nUnited Airlines (UAL) Quarterly Revenue and Net Income (2020-2024)\n\n\n\n3.2.2 Margin Analysis\nThe operating margin collapse to -62.6% in 2020 quantifies the devastating impact of the pandemic on UAL’s core operations. The recovery was swift; by 2022, UAL had achieved a strong 11.1% operating margin and positive net income. The return to double-digit operating margins in 2024 underscores the success of its strategy to focus on premium, international, and business travel, which command higher yields and have seen robust post-pandemic demand.\n\n\n\nUnited Airlines (UAL) Quarterly Operating and Net Margins (2020-2024)",
+    "title": "\n4  United Airlines (UAL) Financial Analysis\n",
+    "section": "\n4.2 Income Sustainability and Recovery",
+    "text": "4.2 Income Sustainability and Recovery\n\n4.2.1 Profitability Analysis\nUnited’s income statement reflects a dramatic V-shaped recovery. After a staggering loss in 2020, the airline saw revenues climb aggressively, surpassing pre-pandemic levels by 2023. This top-line momentum translated into a powerful return to profitability.\n\n\n\nUnited Airlines (UAL) Quarterly Revenue and Net Income (2020-2024)\n\n\n\n4.2.2 Margin Analysis\nThe operating margin collapse to -62.6% in 2020 quantifies the devastating impact of the pandemic on UAL’s core operations. The recovery was swift; by 2022, UAL had achieved a strong 11.1% operating margin and positive net income. The return to double-digit operating margins in 2024 underscores the success of its strategy to focus on premium, international, and business travel, which command higher yields and have seen robust post-pandemic demand.\n\n\n\nUnited Airlines (UAL) Quarterly Operating and Net Margins (2020-2024)",
     "crumbs": [
       "United Airlines (UAL)",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "ual_financial_analysis.html#balance-sheet-health-and-leverage",
     "href": "ual_financial_analysis.html#balance-sheet-health-and-leverage",
-    "title": "\n3  United Airlines (UAL) Financial Analysis\n",
-    "section": "\n3.3 Balance Sheet Health and Leverage",
-    "text": "3.3 Balance Sheet Health and Leverage\nUAL’s balance sheet underwent significant stress and subsequent repair during this period. The company took on substantial debt to navigate the pandemic, but has since focused on de-leveraging.\n\n\n\nUnited Airlines (UAL) Quarterly Total Assets, Debt and Equity (2020-2024)\n\n\n\n3.3.1 Debt-to-Equity Ratio Trend\nThe evolution of UAL’s capital structure is stark. The Debt-to-Equity ratio (Total Liabilities / Total Equity) peaked in 2022 at over 18, indicating extreme financial risk. However, driven by retained earnings, the equity base has more than doubled from its 2021 low, and the Debt-to-Equity ratio has been systematically reduced to a more manageable, though still high, 4.7 by year-start 2025. This trend of strengthening the balance sheet is a critical component of its long-term strategy.\n\n\n\nUnited Airlines (UAL) Quarterly Debt-to-Equity Ratio (2020-2024)",
+    "title": "\n4  United Airlines (UAL) Financial Analysis\n",
+    "section": "\n4.3 Balance Sheet Health and Leverage",
+    "text": "4.3 Balance Sheet Health and Leverage\nUAL’s balance sheet underwent significant stress and subsequent repair during this period. The company took on substantial debt to navigate the pandemic, but has since focused on de-leveraging.\n\n\n\nUnited Airlines (UAL) Quarterly Total Assets, Debt and Equity (2020-2024)\n\n\n\n4.3.1 Debt-to-Equity Ratio Trend\nThe evolution of UAL’s capital structure is stark. The Debt-to-Equity ratio (Total Liabilities / Total Equity) peaked in 2022 at over 18, indicating extreme financial risk. However, driven by retained earnings, the equity base has more than doubled from its 2021 low, and the Debt-to-Equity ratio has been systematically reduced to a more manageable, though still high, 4.7 by year-start 2025. This trend of strengthening the balance sheet is a critical component of its long-term strategy.\n\n\n\nUnited Airlines (UAL) Quarterly Debt-to-Equity Ratio (2020-2024)",
     "crumbs": [
       "United Airlines (UAL)",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "ual_financial_analysis.html#cash-flow-quality-and-sustainability",
     "href": "ual_financial_analysis.html#cash-flow-quality-and-sustainability",
-    "title": "\n3  United Airlines (UAL) Financial Analysis\n",
-    "section": "\n3.4 Cash Flow Quality and Sustainability",
-    "text": "3.4 Cash Flow Quality and Sustainability\nA key measure of an airline’s health is its ability to generate cash internally. The comparison between Net Income and Cash from Operating Activities (CFO) reveals the quality of UAL’s earnings.\nThe data shows a generally positive relationship between earnings and cash flow, particularly in 2022 and 2024 where CFO exceeded net income, a sign of high-quality earnings. However, the negative CFO in 2023, despite positive net income, suggests a significant cash drain from working capital, likely related to the timing of accrued liabilities or a build-up in receivables.\n\n\n\nUnited Airlines (UAL) Quarterly Net Income and Cash from Operating Activities (2020-2024)\n\n\n\n3.4.1 Free Cash Flow Trend\nThe free cash flow (FCF) trend further illustrates the capital-intensive nature of UAL’s business. The negative FCF in most quarters underscores the airline’s heavy investment in fleet modernization and expansion, which is critical for maintaining competitive advantage but also places pressure on liquidity. The consistent negative FCF (except for 2024) highlights its intense capital expenditure cycle, making sustained operational cash generation essential to fund its growth ambitions.\n\n\n\nUnited Airlines (UAL) Quarterly Free Cash Flow (2020-2024)",
+    "title": "\n4  United Airlines (UAL) Financial Analysis\n",
+    "section": "\n4.4 Cash Flow Quality and Sustainability",
+    "text": "4.4 Cash Flow Quality and Sustainability\nA key measure of an airline’s health is its ability to generate cash internally. The comparison between Net Income and Cash from Operating Activities (CFO) reveals the quality of UAL’s earnings.\nThe data shows a generally positive relationship between earnings and cash flow, particularly in 2022 and 2024 where CFO exceeded net income, a sign of high-quality earnings. However, the negative CFO in 2023, despite positive net income, suggests a significant cash drain from working capital, likely related to the timing of accrued liabilities or a build-up in receivables.\n\n\n\nUnited Airlines (UAL) Quarterly Net Income and Cash from Operating Activities (2020-2024)\n\n\n\n4.4.1 Free Cash Flow Trend\nThe free cash flow (FCF) trend further illustrates the capital-intensive nature of UAL’s business. The negative FCF in most quarters underscores the airline’s heavy investment in fleet modernization and expansion, which is critical for maintaining competitive advantage but also places pressure on liquidity. The consistent negative FCF (except for 2024) highlights its intense capital expenditure cycle, making sustained operational cash generation essential to fund its growth ambitions.\n\n\n\nUnited Airlines (UAL) Quarterly Free Cash Flow (2020-2024)",
     "crumbs": [
       "United Airlines (UAL)",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "ual_financial_analysis.html#summary",
     "href": "ual_financial_analysis.html#summary",
-    "title": "\n3  United Airlines (UAL) Financial Analysis\n",
-    "section": "\n3.5 Summary",
-    "text": "3.5 Summary\nIn summary, United Airlines has demonstrated a robust recovery from the pandemic-induced downturn, marked by a strong rebound in revenue and a return to profitability. The airline’s strategic focus on premium travel segments has paid off, enabling it to achieve healthy operating margins. However, the balance sheet remains highly leveraged, and the capital-intensive nature of the business continues to pressure free cash flow. Moving forward, UAL’s ability to sustain operational cash generation while managing its debt levels will be critical to its long-term financial health and competitive positioning in the evolving airline industry.",
+    "title": "\n4  United Airlines (UAL) Financial Analysis\n",
+    "section": "\n4.5 Summary",
+    "text": "4.5 Summary\nIn summary, United Airlines has demonstrated a robust recovery from the pandemic-induced downturn, marked by a strong rebound in revenue and a return to profitability. The airline’s strategic focus on premium travel segments has paid off, enabling it to achieve healthy operating margins. However, the balance sheet remains highly leveraged, and the capital-intensive nature of the business continues to pressure free cash flow. Moving forward, UAL’s ability to sustain operational cash generation while managing its debt levels will be critical to its long-term financial health and competitive positioning in the evolving airline industry.",
     "crumbs": [
       "United Airlines (UAL)",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>United Airlines (UAL) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "jblu_financial_analysis.html",
     "href": "jblu_financial_analysis.html",
-    "title": "\n4  JetBlue (JBLU) Financial Analysis\n",
+    "title": "\n5  JetBlue (JBLU) Financial Analysis\n",
     "section": "",
-    "text": "4.1 Market Capitalization\nJetBlue Airways occupies a competitive space between legacy carriers and ultra-low-cost operators. Analyzing its financial statements is crucial for understanding the strategic challenges and opportunities for airlines with this hybrid model. This section provides a time-series analysis of JetBlue’s key financial metrics, tracing its performance against the backdrop of an evolving industry.\nJetBlue’s market capitalization trajectory from 2020 to 2024 reflects the broader industry’s volatility and recovery. The initial sharp decline in early 2020 corresponds with the onset of the COVID-19 pandemic, which severely impacted air travel demand. However, unlike some competitors, JetBlue’s market cap did not recover to pre-pandemic levels by 2024, indicating ongoing challenges in regaining investor confidence amid competitive pressures and operational hurdles.\nJetBlue (JBLU) Historical Market Capitalization (2020-2024)",
+    "text": "5.1 Market Capitalization\nJetBlue Airways occupies a competitive space between legacy carriers and ultra-low-cost operators. Analyzing its financial statements is crucial for understanding the strategic challenges and opportunities for airlines with this hybrid model. This section provides a time-series analysis of JetBlue’s key financial metrics, tracing its performance against the backdrop of an evolving industry.\nJetBlue’s market capitalization trajectory from 2020 to 2024 reflects the broader industry’s volatility and recovery. The initial sharp decline in early 2020 corresponds with the onset of the COVID-19 pandemic, which severely impacted air travel demand. However, unlike some competitors, JetBlue’s market cap did not recover to pre-pandemic levels by 2024, indicating ongoing challenges in regaining investor confidence amid competitive pressures and operational hurdles.\nJetBlue (JBLU) Historical Market Capitalization (2020-2024)",
     "crumbs": [
       "Jet Blue (JBLU)",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "jblu_financial_analysis.html#income-statement-overview",
     "href": "jblu_financial_analysis.html#income-statement-overview",
-    "title": "\n4  JetBlue (JBLU) Financial Analysis\n",
-    "section": "\n4.2 Income Statement Overview",
-    "text": "4.2 Income Statement Overview\n\n4.2.1 Profitability Analysis\nJetBlue’s path to profitability has been significantly more challenging than that of its larger peers. While revenue has recovered, consistent bottom-line performance remains elusive.\n\n\n\nJetBlue (JBLU) Quarterly Revenue and Net Income (2020-2024)",
+    "title": "\n5  JetBlue (JBLU) Financial Analysis\n",
+    "section": "\n5.2 Income Statement Overview",
+    "text": "5.2 Income Statement Overview\n\n5.2.1 Profitability Analysis\nJetBlue’s path to profitability has been significantly more challenging than that of its larger peers. While revenue has recovered, consistent bottom-line performance remains elusive.\n\n\n\nJetBlue (JBLU) Quarterly Revenue and Net Income (2020-2024)",
     "crumbs": [
       "Jet Blue (JBLU)",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "jblu_financial_analysis.html#margin-analysis",
     "href": "jblu_financial_analysis.html#margin-analysis",
-    "title": "\n4  JetBlue (JBLU) Financial Analysis\n",
-    "section": "\n4.3 Margin Analysis",
-    "text": "4.3 Margin Analysis\nJetBlue’s recovery trajectory has been fraught with volatility. After a brief return to a small operating and net profit in 2022, the airline slipped back into losses in 2023 and continued to post a net loss in 2024. This persistent margin weakness suggests structural cost pressures, potentially from an uncompetitive labor cost structure or an inefficient route network that faces intense competition from both legacy carriers on premium routes and ultra-low-cost carriers on leisure routes, leaving JetBlue caught in the middle.\n\n\n\nJetBlue (JBLU) Quarterly Operating and Net Margins (2020-2024)",
+    "title": "\n5  JetBlue (JBLU) Financial Analysis\n",
+    "section": "\n5.3 Margin Analysis",
+    "text": "5.3 Margin Analysis\nJetBlue’s recovery trajectory has been fraught with volatility. After a brief return to a small operating and net profit in 2022, the airline slipped back into losses in 2023 and continued to post a net loss in 2024. This persistent margin weakness suggests structural cost pressures, potentially from an uncompetitive labor cost structure or an inefficient route network that faces intense competition from both legacy carriers on premium routes and ultra-low-cost carriers on leisure routes, leaving JetBlue caught in the middle.\n\n\n\nJetBlue (JBLU) Quarterly Operating and Net Margins (2020-2024)",
     "crumbs": [
       "Jet Blue (JBLU)",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "jblu_financial_analysis.html#balance-sheet-health-and-leverage",
     "href": "jblu_financial_analysis.html#balance-sheet-health-and-leverage",
-    "title": "\n4  JetBlue (JBLU) Financial Analysis\n",
-    "section": "\n4.4 Balance Sheet Health and Leverage",
-    "text": "4.4 Balance Sheet Health and Leverage\nJetBlue’s struggle with profitability is reflected in its deteriorating balance sheet health, marked by rising debt levels.\n\n\n\nJetBlue (JBLU) Quarterly Total Assets, Debt and Equity (2020-2024)\n\n\n\n4.4.1 Debt-to-Equity Ratio Trend\nJetBlue’s financial stability has weakened considerably over the five-year period. While the Net Debt to Equity ratio briefly improved in 2021, it has since escalated dramatically, reaching 5x by the end of 2024. This trend is a direct result of equity erosion from persistent net losses and an increase in net debt to fund operations and investments. Such high leverage poses a significant financial risk and constrains the company’s strategic flexibility.\n\n\n\nJetBlue (JBLU) Quarterly Debt-to-Equity Ratio (2020-2024)",
+    "title": "\n5  JetBlue (JBLU) Financial Analysis\n",
+    "section": "\n5.4 Balance Sheet Health and Leverage",
+    "text": "5.4 Balance Sheet Health and Leverage\nJetBlue’s struggle with profitability is reflected in its deteriorating balance sheet health, marked by rising debt levels.\n\n\n\nJetBlue (JBLU) Quarterly Total Assets, Debt and Equity (2020-2024)\n\n\n\n5.4.1 Debt-to-Equity Ratio Trend\nJetBlue’s financial stability has weakened considerably over the five-year period. While the Net Debt to Equity ratio briefly improved in 2021, it has since escalated dramatically, reaching 5x by the end of 2024. This trend is a direct result of equity erosion from persistent net losses and an increase in net debt to fund operations and investments. Such high leverage poses a significant financial risk and constrains the company’s strategic flexibility.\n\n\n\nJetBlue (JBLU) Quarterly Debt-to-Equity Ratio (2020-2024)",
     "crumbs": [
       "Jet Blue (JBLU)",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "jblu_financial_analysis.html#cash-flow-qjbluity-and-sustainability",
     "href": "jblu_financial_analysis.html#cash-flow-qjbluity-and-sustainability",
-    "title": "\n4  JetBlue (JBLU) Financial Analysis\n",
-    "section": "\n4.5 Cash Flow Qjbluity and Sustainability",
-    "text": "4.5 Cash Flow Qjbluity and Sustainability\nJetBlue’s cash flow statement further highlights its operational challenges, showing a disconnect between reported earnings and actjblu cash generation.\nThe pattern is concerning: in years with net losses (2020, 2021, 2023, 2024), cash from operations was also negative, and often worse than the reported loss. This indicates that non-cash charges like depreciation were not sufficient to offset cash drains from operations.\n\n\n\nJetBlue (JBLU) Quarterly Net Income and Cash from Operating Activities (2020-2024)\n\n\n\n4.5.1 Free Cash Flow Trend\nFurthermore, JetBlue’s free cash flow has been consistently and deeply negative over the periods. This inability to generate positive free cash flow underscores a critical lack of financial flexibility and a dependency on external financing to fund its capital expenditures.\n\n\n\nJetBlue (JBLU) Quarterly Free Cash Flow (2020-2024)",
+    "title": "\n5  JetBlue (JBLU) Financial Analysis\n",
+    "section": "\n5.5 Cash Flow Qjbluity and Sustainability",
+    "text": "5.5 Cash Flow Qjbluity and Sustainability\nJetBlue’s cash flow statement further highlights its operational challenges, showing a disconnect between reported earnings and actjblu cash generation.\nThe pattern is concerning: in years with net losses (2020, 2021, 2023, 2024), cash from operations was also negative, and often worse than the reported loss. This indicates that non-cash charges like depreciation were not sufficient to offset cash drains from operations.\n\n\n\nJetBlue (JBLU) Quarterly Net Income and Cash from Operating Activities (2020-2024)\n\n\n\n5.5.1 Free Cash Flow Trend\nFurthermore, JetBlue’s free cash flow has been consistently and deeply negative over the periods. This inability to generate positive free cash flow underscores a critical lack of financial flexibility and a dependency on external financing to fund its capital expenditures.\n\n\n\nJetBlue (JBLU) Quarterly Free Cash Flow (2020-2024)",
     "crumbs": [
       "Jet Blue (JBLU)",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "jblu_financial_analysis.html#summary",
     "href": "jblu_financial_analysis.html#summary",
-    "title": "\n4  JetBlue (JBLU) Financial Analysis\n",
-    "section": "\n4.6 Summary",
-    "text": "4.6 Summary\nIn summary, JetBlue’s financial analysis from 2020 to 2024 reveals a company grappling with the dual challenges of recovering from a severe industry downturn while trying to establish a sustainable and profitable business model. The airline’s inability to consistently generate profits, coupled with a deteriorating balance sheet and negative cash flows, raises significant concerns about its long-term viability without substantial strategic changes. JetBlue’s hybrid model, while offering some competitive advantages, appears to be a liability in a market increasingly polarized between low-cost and full-service carriers. Addressing these financial and operational challenges will be critical for JetBlue to regain its footing in the competitive U.S. airline landscape.",
+    "title": "\n5  JetBlue (JBLU) Financial Analysis\n",
+    "section": "\n5.6 Summary",
+    "text": "5.6 Summary\nIn summary, JetBlue’s financial analysis from 2020 to 2024 reveals a company grappling with the dual challenges of recovering from a severe industry downturn while trying to establish a sustainable and profitable business model. The airline’s inability to consistently generate profits, coupled with a deteriorating balance sheet and negative cash flows, raises significant concerns about its long-term viability without substantial strategic changes. JetBlue’s hybrid model, while offering some competitive advantages, appears to be a liability in a market increasingly polarized between low-cost and full-service carriers. Addressing these financial and operational challenges will be critical for JetBlue to regain its footing in the competitive U.S. airline landscape.",
     "crumbs": [
       "Jet Blue (JBLU)",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>JetBlue (JBLU) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "skyw_financial_analysis.html",
     "href": "skyw_financial_analysis.html",
-    "title": "\n5  SkyWest (SKYW) Financial Analysis\n",
+    "title": "\n6  SkyWest (SKYW) Financial Analysis\n",
     "section": "",
-    "text": "5.1 Market Capitalization Trend\nSkyWest, Inc. operates under a unique and resilient business model as a regional carrier, providing flight services under contract for major airline partners like United Airlines. This structure insulates it from certain risks, such as direct fuel price and ticketing volatility, that mainline carriers face. Its financial performance, therefore, offers a distinct and valuable perspective on the U.S. airline sector. This section will analyze SkyWest’s financial statements from 2020 through the end of fiscal year 2024.\nSkyWest’s market capitalization trajectory from 2020 to 2024 reflects its resilience and strategic positioning in the airline industry. The company’s market cap experienced a significant dip during the initial phase of the COVID-19 pandemic in early 2020, mirroring the broader industry downturn. However, unlike many mainline carriers, SkyWest’s recovery was relatively swift and steady, underscoring the strength of its regional carrier model and its contracts with major airlines.\nSkyWest (SKYW) Historical Market Capitalization (2020-2024)",
+    "text": "6.1 Market Capitalization Trend\nSkyWest, Inc. operates under a unique and resilient business model as a regional carrier, providing flight services under contract for major airline partners like United Airlines. This structure insulates it from certain risks, such as direct fuel price and ticketing volatility, that mainline carriers face. Its financial performance, therefore, offers a distinct and valuable perspective on the U.S. airline sector. This section will analyze SkyWest’s financial statements from 2020 through the end of fiscal year 2024.\nSkyWest’s market capitalization trajectory from 2020 to 2024 reflects its resilience and strategic positioning in the airline industry. The company’s market cap experienced a significant dip during the initial phase of the COVID-19 pandemic in early 2020, mirroring the broader industry downturn. However, unlike many mainline carriers, SkyWest’s recovery was relatively swift and steady, underscoring the strength of its regional carrier model and its contracts with major airlines.\nSkyWest (SKYW) Historical Market Capitalization (2020-2024)",
     "crumbs": [
       "SkyWest (SKYW)",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "skyw_financial_analysis.html#income-statement-and-profitability",
     "href": "skyw_financial_analysis.html#income-statement-and-profitability",
-    "title": "\n5  SkyWest (SKYW) Financial Analysis\n",
-    "section": "\n5.2 Income Statement and Profitability",
-    "text": "5.2 Income Statement and Profitability\n\n5.2.1 Profitability Analysis\nSkyWest’s capacity-purchase business model provides a foundation for more stable and predictable revenue streams compared to its mainline counterparts.\n\n\n\nSkyWest (SKYW) Quarterly Revenue and Net Income (2020-2024)\n\n\n\n5.2.2 Margin Analysis\nSkyWest’s profitability demonstrates remarkable consistency despite industry-wide turmoil. The stability of its results stems from its capacity purchase agreements with major carriers. These fixed-fee and cost-plus contracts largely insulate SkyWest from passenger demand risk and fuel price volatility, which are the primary sources of margin volatility for mainline carriers. While it posted modest losses in 2020 and 2022, it maintained positive operating income in other years, culminating in a very strong 15% operating margin in 2024.\n\n\n\nSkyWest (SKYW) Quarterly Operating and Net Margins (2020-2024)",
+    "title": "\n6  SkyWest (SKYW) Financial Analysis\n",
+    "section": "\n6.2 Income Statement and Profitability",
+    "text": "6.2 Income Statement and Profitability\n\n6.2.1 Profitability Analysis\nSkyWest’s capacity-purchase business model provides a foundation for more stable and predictable revenue streams compared to its mainline counterparts.\n\n\n\nSkyWest (SKYW) Quarterly Revenue and Net Income (2020-2024)\n\n\n\n6.2.2 Margin Analysis\nSkyWest’s profitability demonstrates remarkable consistency despite industry-wide turmoil. The stability of its results stems from its capacity purchase agreements with major carriers. These fixed-fee and cost-plus contracts largely insulate SkyWest from passenger demand risk and fuel price volatility, which are the primary sources of margin volatility for mainline carriers. While it posted modest losses in 2020 and 2022, it maintained positive operating income in other years, culminating in a very strong 15% operating margin in 2024.\n\n\n\nSkyWest (SKYW) Quarterly Operating and Net Margins (2020-2024)",
     "crumbs": [
       "SkyWest (SKYW)",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "skyw_financial_analysis.html#balance-sheet-health-and-leverage",
     "href": "skyw_financial_analysis.html#balance-sheet-health-and-leverage",
-    "title": "\n5  SkyWest (SKYW) Financial Analysis\n",
-    "section": "\n5.3 Balance Sheet Health and Leverage",
-    "text": "5.3 Balance Sheet Health and Leverage\nA core strength of SkyWest is its conservative financial management, resulting in a robust and low-leverage balance sheet.\n\n\n\nSkyWest (SKYW) Quarterly Total Assets, Debt and Equity (2020-2024)\n\n\n\n5.3.1 Debt-to-Equity Ratio Trend\nSkyWest’s financial structure is exceptionally strong for an airline. Over the five-year period, its Net Debt to Equity ratio has steadily decreased from 2.3x to a very healthy 1.7x by the end of 2024. This consistent deleveraging, even through challenging years, provides SkyWest with significant financial resilience and a lower risk profile.\n\n\n\nSkyWest (SKYW) Quarterly Debt-to-Equity Ratio (2020-2024)",
+    "title": "\n6  SkyWest (SKYW) Financial Analysis\n",
+    "section": "\n6.3 Balance Sheet Health and Leverage",
+    "text": "6.3 Balance Sheet Health and Leverage\nA core strength of SkyWest is its conservative financial management, resulting in a robust and low-leverage balance sheet.\n\n\n\nSkyWest (SKYW) Quarterly Total Assets, Debt and Equity (2020-2024)\n\n\n\n6.3.1 Debt-to-Equity Ratio Trend\nSkyWest’s financial structure is exceptionally strong for an airline. Over the five-year period, its Net Debt to Equity ratio has steadily decreased from 2.3x to a very healthy 1.7x by the end of 2024. This consistent deleveraging, even through challenging years, provides SkyWest with significant financial resilience and a lower risk profile.\n\n\n\nSkyWest (SKYW) Quarterly Debt-to-Equity Ratio (2020-2024)",
     "crumbs": [
       "SkyWest (SKYW)",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "skyw_financial_analysis.html#cash-flow-qskywity-and-sustainability",
     "href": "skyw_financial_analysis.html#cash-flow-qskywity-and-sustainability",
-    "title": "\n5  SkyWest (SKYW) Financial Analysis\n",
-    "section": "\n5.4 Cash Flow Qskywity and Sustainability",
-    "text": "5.4 Cash Flow Qskywity and Sustainability\nSkyWest’s operational efficiency is best illustrated by its consistent and strong cash flow generation.\nThe analysis reveals a powerful and consistent ability to convert earnings (and even losses) into positive operating cash flow. In every single year, Cash from Operating Activities was significantly positive and substantially exceeded net income. This indicates very high-quality earnings and efficient working capital management. This operational strength translates directly to financial health.\n\n\n\nSkyWest (SKYW) Quarterly Net Income and Cash from Operating Activities (2020-2024)\n\n\n\n5.4.1 Free Cash Flow Trend\nSkyWest’s return to positive free cash flow since 2022 demonstrates an ability to fund capital needs internally, a critical hallmark of a self-sustaining and healthy enterprise.\n\n\n\nSkyWest (SKYW) Quarterly Free Cash Flow (2020-2024)",
+    "title": "\n6  SkyWest (SKYW) Financial Analysis\n",
+    "section": "\n6.4 Cash Flow Qskywity and Sustainability",
+    "text": "6.4 Cash Flow Qskywity and Sustainability\nSkyWest’s operational efficiency is best illustrated by its consistent and strong cash flow generation.\nThe analysis reveals a powerful and consistent ability to convert earnings (and even losses) into positive operating cash flow. In every single year, Cash from Operating Activities was significantly positive and substantially exceeded net income. This indicates very high-quality earnings and efficient working capital management. This operational strength translates directly to financial health.\n\n\n\nSkyWest (SKYW) Quarterly Net Income and Cash from Operating Activities (2020-2024)\n\n\n\n6.4.1 Free Cash Flow Trend\nSkyWest’s return to positive free cash flow since 2022 demonstrates an ability to fund capital needs internally, a critical hallmark of a self-sustaining and healthy enterprise.\n\n\n\nSkyWest (SKYW) Quarterly Free Cash Flow (2020-2024)",
     "crumbs": [
       "SkyWest (SKYW)",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "skyw_financial_analysis.html#summary",
     "href": "skyw_financial_analysis.html#summary",
-    "title": "\n5  SkyWest (SKYW) Financial Analysis\n",
-    "section": "\n5.5 Summary",
-    "text": "5.5 Summary\nIn summary, SkyWest’s financial analysis from 2020 to 2024 reveals a company that has not only weathered the unprecedented challenges of the pandemic but has emerged stronger and more resilient. Its unique business model as a regional carrier, combined with prudent financial management, has resulted in a robust balance sheet, consistent profitability, and strong cash flow generation. SkyWest’s low leverage, stable margins, and ability to generate free cash flow position it well for future growth and stability in an industry that remains volatile and competitive. This analysis underscores SkyWest as a standout performer in the airline sector, demonstrating that strategic focus and operational efficiency can yield significant advantages even in challenging times.",
+    "title": "\n6  SkyWest (SKYW) Financial Analysis\n",
+    "section": "\n6.5 Summary",
+    "text": "6.5 Summary\nIn summary, SkyWest’s financial analysis from 2020 to 2024 reveals a company that has not only weathered the unprecedented challenges of the pandemic but has emerged stronger and more resilient. Its unique business model as a regional carrier, combined with prudent financial management, has resulted in a robust balance sheet, consistent profitability, and strong cash flow generation. SkyWest’s low leverage, stable margins, and ability to generate free cash flow position it well for future growth and stability in an industry that remains volatile and competitive. This analysis underscores SkyWest as a standout performer in the airline sector, demonstrating that strategic focus and operational efficiency can yield significant advantages even in challenging times.",
     "crumbs": [
       "SkyWest (SKYW)",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>SkyWest (SKYW) Financial Analysis</span>"
     ]
   },
   {
     "objectID": "comparative_financial_analysis.html",
     "href": "comparative_financial_analysis.html",
-    "title": "\n6  Comparative Financial Analysis\n",
+    "title": "\n7  Comparative Financial Analysis\n",
     "section": "",
-    "text": "7 Introduction\nThis blog explores the financial performance of selected airlines using various financial analysis techniques including time series, cross-sectional, and panel data analysis.\nThis report provides a detailed comparative financial analysis of three distinct players in the U.S. airline industry: legacy carrier United Airlines (UAL), low-cost carrier JetBlue (JBLU), and regional operator SkyWest (SKW). Utilizing financial data from the beginning of 2020 through the end of fiscal year 2024, this study examines the post-pandemic recovery, financial health, profitability, and operational efficiency of each company. The strategic importance of this analysis lies in understanding the divergent recovery paths and competitive positioning that have emerged in a sector profoundly reshaped by recent global events.",
+    "text": "8 Introduction\nThis blog explores the financial performance of selected airlines using various financial analysis techniques including time series, cross-sectional, and panel data analysis.\nThis report provides a detailed comparative financial analysis of three distinct players in the U.S. airline industry: legacy carrier United Airlines (UAL), low-cost carrier JetBlue (JBLU), and regional operator SkyWest (SKW). Utilizing financial data from the beginning of 2020 through the end of fiscal year 2024, this study examines the post-pandemic recovery, financial health, profitability, and operational efficiency of each company. The strategic importance of this analysis lies in understanding the divergent recovery paths and competitive positioning that have emerged in a sector profoundly reshaped by recent global events.",
     "crumbs": [
       "Comparative Analysis",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
     ]
   },
   {
     "objectID": "comparative_financial_analysis.html#data-collection",
     "href": "comparative_financial_analysis.html#data-collection",
-    "title": "\n6  Comparative Financial Analysis\n",
-    "section": "\n7.1 Data Collection",
-    "text": "7.1 Data Collection\nWe collected data using Financial Modeling Prep (FMP) API. You can get your free API key by signing up at https://financialmodelingprep.com/developer/docs/pricing/",
+    "title": "\n7  Comparative Financial Analysis\n",
+    "section": "\n8.1 Data Collection",
+    "text": "8.1 Data Collection\nWe collected data using Financial Modeling Prep (FMP) API. You can get your free API key by signing up at https://financialmodelingprep.com/developer/docs/pricing/",
     "crumbs": [
       "Comparative Analysis",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
     ]
   },
   {
     "objectID": "comparative_financial_analysis.html#liquidity-ratios",
     "href": "comparative_financial_analysis.html#liquidity-ratios",
-    "title": "\n6  Comparative Financial Analysis\n",
-    "section": "\n7.2 Liquidity Ratios",
-    "text": "7.2 Liquidity Ratios",
+    "title": "\n7  Comparative Financial Analysis\n",
+    "section": "\n8.2 Liquidity Ratios",
+    "text": "8.2 Liquidity Ratios",
     "crumbs": [
       "Comparative Analysis",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
     ]
   },
   {
     "objectID": "comparative_financial_analysis.html#leverage-ratios",
     "href": "comparative_financial_analysis.html#leverage-ratios",
-    "title": "\n6  Comparative Financial Analysis\n",
-    "section": "\n7.3 Leverage Ratios",
-    "text": "7.3 Leverage Ratios",
+    "title": "\n7  Comparative Financial Analysis\n",
+    "section": "\n8.3 Leverage Ratios",
+    "text": "8.3 Leverage Ratios",
     "crumbs": [
       "Comparative Analysis",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
     ]
   },
   {
     "objectID": "comparative_financial_analysis.html#cross-sectional-analysis-of-debt-to-asset-ratio-in-2024",
     "href": "comparative_financial_analysis.html#cross-sectional-analysis-of-debt-to-asset-ratio-in-2024",
-    "title": "\n6  Comparative Financial Analysis\n",
-    "section": "\n7.4 Cross-Sectional Analysis of Debt to Asset Ratio in 2024",
-    "text": "7.4 Cross-Sectional Analysis of Debt to Asset Ratio in 2024",
+    "title": "\n7  Comparative Financial Analysis\n",
+    "section": "\n8.4 Cross-Sectional Analysis of Debt to Asset Ratio in 2024",
+    "text": "8.4 Cross-Sectional Analysis of Debt to Asset Ratio in 2024",
     "crumbs": [
       "Comparative Analysis",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
     ]
   },
   {
     "objectID": "comparative_financial_analysis.html#efficiency-and-profitability-ratios",
     "href": "comparative_financial_analysis.html#efficiency-and-profitability-ratios",
-    "title": "\n6  Comparative Financial Analysis\n",
-    "section": "\n7.5 Efficiency and Profitability Ratios",
-    "text": "7.5 Efficiency and Profitability Ratios\n\n7.5.1 ROA ROE\n\n\n\n\n\n\n\n\n\n\n\n7.5.2 Capital Structure Leverage and Common Earnings Leverage\n\n\n\n\n\n\n\n\n\n\n\n7.5.3 Efficiency Ratios Over Time\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7.5.4 Profitability Ratios Over Time",
+    "title": "\n7  Comparative Financial Analysis\n",
+    "section": "\n8.5 Efficiency and Profitability Ratios",
+    "text": "8.5 Efficiency and Profitability Ratios\n\n8.5.1 ROA ROE\n\n\n\n\n\n\n\n\n\n\n\n8.5.2 Capital Structure Leverage and Common Earnings Leverage\n\n\n\n\n\n\n\n\n\n\n\n8.5.3 Efficiency Ratios Over Time\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8.5.4 Profitability Ratios Over Time",
     "crumbs": [
       "Comparative Analysis",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
-    ]
-  },
-  {
-    "objectID": "references.html",
-    "href": "references.html",
-    "title": "7  References",
-    "section": "",
-    "text": "This report leverages a variety of data sources and analytical tools to provide a comprehensive financial analysis of United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW). The primary data source for financial statements and market data is the Financial Modeling Prep (FMP) API, which offers extensive access to historical and current financial information for publicly traded companies.\n\nFinancial Modeling Prep (FMP) API: https://financialmodelingprep.com/developer/docs/\nTidyquant R Package: https://business-science.github.io/tidyquant/\nTidyverse R Package: https://www.tidyverse.org/\nTidyfinance R Package: https://www.tidy-finance.org/r/financial-statement-analysis.html\nggthemr R Package",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>References</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Comparative Financial Analysis</span>"
     ]
   }
 ]

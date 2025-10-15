@@ -23,6 +23,7 @@ book:
   chapters:
     - index.qmd
     - about.qmd
+    - references.qmd
     - executive_summary.qmd
     - part: "United Airlines (UAL)"
       chapters:
@@ -36,7 +37,7 @@ book:
     - part: "Comparative Analysis"
       chapters:
         - comparative_financial_analysis.qmd
-    - references.qmd
+
   description: "A comprehensive financial analysis of the US airline sector, exploring key metrics and trends."
   page-footer: 
     background: light
