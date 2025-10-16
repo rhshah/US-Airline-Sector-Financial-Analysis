@@ -775,12 +775,12 @@ ggplotly(p_asset_comp)
 #| fig-cap: "Cash Flow Quality for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"
 ggthemr("fresh")
 p_cf_quality <- ggplot(common_size_cash_flow_statement,
-       aes(x = date, y = net_cash_provided_by_operating_activities / net_income,
+       aes(x = date, y = net_cash_provided_by_operating_activities,
            color = symbol, group = symbol)) +
   geom_line(size = 1.2) +
-  geom_hline(yintercept = 1, linetype = "dashed", color = "gray50") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
   labs(title = "Cash Flow Quality Ratio (CFO / Net Income)",
-       x = "Quarter", y = "Ratio", color = "Airline")
+       x = "Quarter", y = "Ratio (% of Revenue)", color = "Airline")
 
 ggplotly(p_cf_quality)
 ```
