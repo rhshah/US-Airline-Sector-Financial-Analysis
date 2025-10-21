@@ -59,6 +59,7 @@ jblu_profile <- fmp_get(
 jblu_stock_information <- fmp_get(
   resource = "search", params = list(query = "JBLU")
 )
+airline_tickers <- c("JBLU")
 ```
 
 ## Market Capitalization
@@ -244,7 +245,8 @@ ggplotly(p6)
 
 ## Efficiency and Performance Ratios
 
-```{r efficiency-ratios}
+```{r , include=FALSE}
+#| label: jblu-efficiency-ratios
 #| echo: false
 #| message: false
 #| warning: false

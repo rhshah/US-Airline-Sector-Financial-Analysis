@@ -59,6 +59,7 @@ skyw_profile <- fmp_get(
 skyw_stock_information <- fmp_get(
   resource = "search", params = list(query = "SKYW")
 )
+airline_tickers <- c("SKYW")
 ```
 
 ## Market Capitalization Trend
@@ -244,7 +245,8 @@ ggplotly(p6)
 
 ## Efficiency and Performance Ratios
 
-```{r efficiency-ratios}
+```{r, include=FALSE}
+#| label: skyw-efficiency-ratios
 #| echo: false
 #| message: false
 #| warning: false

@@ -59,6 +59,7 @@ ual_profile <- fmp_get(
 ual_stock_information <- fmp_get(
   resource = "search", params = list(query = "UAL")
 )
+airline_tickers <- c("UAL")
 ```
 
 ## Market Capitalization Recovery
@@ -244,7 +245,8 @@ ggplotly(p6)
 
 ## Efficiency and Performance Ratios
 
-```{r efficiency-ratios}
+```{r, include=FALSE}
+#| label: ual-efficiency-ratios
 #| echo: false
 #| message: false
 #| warning: false
