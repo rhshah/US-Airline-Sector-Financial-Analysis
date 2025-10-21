@@ -241,6 +241,158 @@ p6 <- ggplot(jblu_cash_flow_statement, aes(x = date, y = free_cash_flow)) +
   theme_minimal()
 ggplotly(p6)
 ```
+
+## Efficiency and Performance Ratios
+
+```{r efficiency-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+jblu_balance_sheet <- jblu_balance_sheet %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+jblu_income_statement <- jblu_income_statement %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+jblu_cash_flow_statement <- jblu_cash_flow_statement %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+jblu_balance_sheet <- jblu_balance_sheet |> 
+  mutate(
+    current_ratio = total_current_assets / total_assets,
+    quick_ratio = (total_current_assets - inventory) / total_current_liabilities,
+    cash_ratio = cash_and_cash_equivalents / total_current_liabilities,
+    debt_to_equity = total_debt / total_equity,
+    debt_to_asset = total_debt / total_assets,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
+
+jblu_income_statement <- jblu_income_statement |> 
+  mutate(
+    interest_coverage = operating_income / interest_expense,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
+
+jblu_combined_statements <- jblu_balance_sheet |> 
+  select(symbol, year_quarter, label, current_ratio, quick_ratio, cash_ratio,
+         debt_to_equity, debt_to_asset, total_assets, total_equity, net_receivables) |> 
+  left_join(
+    jblu_income_statement |> 
+      select(symbol, year_quarter, interest_coverage, revenue, cost_of_revenue,
+             selling_general_and_administrative_expenses, interest_expense,
+             gross_profit, net_income),
+    join_by(symbol, year_quarter)
+  ) |> 
+  left_join(
+    jblu_cash_flow_statement |> 
+      select(symbol, year_quarter, inventory, accounts_receivables),
+     join_by(symbol, year_quarter)
+  )
+
+jblu_combined_statements <- jblu_combined_statements |> 
+  mutate(
+    asset_turnover = ifelse(total_assets == 0, 0, revenue / total_assets),
+    inventory_turnover = ifelse(inventory == 0, 0, cost_of_revenue / inventory),
+    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables)
+  )
+jblu_combined_statements <- jblu_combined_statements %>%
+  # Calculate average accounts receivable and average receivables turnover
+  mutate(
+        # Average Total Assets
+    average_total_assets = (lag(total_assets) + total_assets) / 2,
+    
+    # Return on Assets
+    return_on_assets = (net_income + (interest_expense * (1- 0.21))) / average_total_assets,
+    
+    # Total Asset Turnover
+    total_asset_turnover = revenue / average_total_assets,
+    
+    
+    # Return on Common Equity
+    return_on_common_equity = net_income / (lag(total_equity) + total_equity) / 2,
+    
+    # Capital Structure Leverage Ratio
+    capital_structure_leverage_ratio = average_total_assets / (lag(total_equity) + total_equity) / 2,
+    
+    # Common Earnings Leverage Ratio
+    common_earnings_leverage_ratio = net_income / (net_income + interest_expense * (1 - 0.21)),
+    
+    
+    # Calculate average accounts receivable
+    average_accounts_receivable = (lag(net_receivables) + net_receivables) / 2,
+    
+    # Calculate average receivables turnover
+    average_receivables_turnover = ifelse (average_accounts_receivable == 0, 0, revenue / average_accounts_receivable)
+  )
+```
+
+### Return on Assets (ROA)
+
+JBLU's Return on Assets (ROA) has been highly volatile from 2020 to 2024, reflecting the airline's struggle to generate consistent profits amid fluctuating demand and operational challenges. The ROA dipped into negative territory during the peak pandemic years, with only brief recoveries in between. This inconsistency highlights the difficulties JetBlue faces in efficiently utilizing its asset base to generate earnings.
+
+```{r}
+#| label: jblu-roa
+#| fig.cap: "JetBlue (JBLU) Quarterly Return on Assets (ROA) (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p7 <- ggplot() +
+  # Add points for ROA data
+  geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = return_on_assets, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = return_on_assets, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Return on Assets for JBLU (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p7)
+```
+
+### Return on Equity (ROE)
+
+JBLU's Return on Equity (ROE) has mirrored its ROA trends, with significant fluctuations and periods of negative returns. The airline's ROE has been particularly affected by its equity erosion due to sustained losses, leading to a challenging environment for shareholders. The negative ROE in several quarters underscores the difficulties JetBlue faces in delivering value to its equity investors.
+
+
+```{r}
+#| label: jblu-roe
+#| fig.cap: "JetBlue (JBLU) Quarterly Return on Equity (ROE) (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p8 <- ggplot() +
+  # Add points for ROE data
+  geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = return_on_common_equity, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = return_on_common_equity, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Return on Equity for JBLU (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p8)
+```
+
 ## Summary
 
 In summary, JetBlue's financial analysis from 2020 to 2024 reveals a company grappling with the dual challenges of recovering from a severe industry downturn while trying to establish a sustainable and profitable business model. The airline's inability to consistently generate profits, coupled with a deteriorating balance sheet and negative cash flows, raises significant concerns about its long-term viability without substantial strategic changes. JetBlue's hybrid model, while offering some competitive advantages, appears to be a liability in a market increasingly polarized between low-cost and full-service carriers. Addressing these financial and operational challenges will be critical for JetBlue to regain its footing in the competitive U.S. airline landscape.

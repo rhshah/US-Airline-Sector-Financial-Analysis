@@ -241,6 +241,158 @@ p6 <- ggplot(ual_cash_flow_statement, aes(x = date, y = free_cash_flow)) +
   theme_minimal()
 ggplotly(p6)
 ```
+
+## Efficiency and Performance Ratios
+
+```{r efficiency-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+ual_balance_sheet <- ual_balance_sheet %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+ual_income_statement <- ual_income_statement %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+ual_cash_flow_statement <- ual_cash_flow_statement %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+ual_balance_sheet <- ual_balance_sheet |> 
+  mutate(
+    current_ratio = total_current_assets / total_assets,
+    quick_ratio = (total_current_assets - inventory) / total_current_liabilities,
+    cash_ratio = cash_and_cash_equivalents / total_current_liabilities,
+    debt_to_equity = total_debt / total_equity,
+    debt_to_asset = total_debt / total_assets,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
+
+ual_income_statement <- ual_income_statement |> 
+  mutate(
+    interest_coverage = operating_income / interest_expense,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
+
+ual_combined_statements <- ual_balance_sheet |> 
+  select(symbol, year_quarter, label, current_ratio, quick_ratio, cash_ratio,
+         debt_to_equity, debt_to_asset, total_assets, total_equity, net_receivables) |> 
+  left_join(
+    ual_income_statement |> 
+      select(symbol, year_quarter, interest_coverage, revenue, cost_of_revenue,
+             selling_general_and_administrative_expenses, interest_expense,
+             gross_profit, net_income),
+    join_by(symbol, year_quarter)
+  ) |> 
+  left_join(
+    ual_cash_flow_statement |> 
+      select(symbol, year_quarter, inventory, accounts_receivables),
+     join_by(symbol, year_quarter)
+  )
+
+ual_combined_statements <- ual_combined_statements |> 
+  mutate(
+    asset_turnover = ifelse(total_assets == 0, 0, revenue / total_assets),
+    inventory_turnover = ifelse(inventory == 0, 0, cost_of_revenue / inventory),
+    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables)
+  )
+ual_combined_statements <- ual_combined_statements %>%
+  # Calculate average accounts receivable and average receivables turnover
+  mutate(
+        # Average Total Assets
+    average_total_assets = (lag(total_assets) + total_assets) / 2,
+    
+    # Return on Assets
+    return_on_assets = (net_income + (interest_expense * (1- 0.21))) / average_total_assets,
+    
+    # Total Asset Turnover
+    total_asset_turnover = revenue / average_total_assets,
+    
+    
+    # Return on Common Equity
+    return_on_common_equity = net_income / (lag(total_equity) + total_equity) / 2,
+    
+    # Capital Structure Leverage Ratio
+    capital_structure_leverage_ratio = average_total_assets / (lag(total_equity) + total_equity) / 2,
+    
+    # Common Earnings Leverage Ratio
+    common_earnings_leverage_ratio = net_income / (net_income + interest_expense * (1 - 0.21)),
+    
+    
+    # Calculate average accounts receivable
+    average_accounts_receivable = (lag(net_receivables) + net_receivables) / 2,
+    
+    # Calculate average receivables turnover
+    average_receivables_turnover = ifelse (average_accounts_receivable == 0, 0, revenue / average_accounts_receivable)
+  )
+```
+
+### Return on Assets (ROA)
+
+UAL's Return on Assets (ROA) trajectory highlights the airline's efficiency in utilizing its asset base to generate profits. The negative ROA during the pandemic years reflects the severe operational challenges faced, while the positive rebound in 2022 and beyond indicates improved asset utilization as travel demand recovered.
+
+
+```{r}
+#| label: ual-roa
+#| fig.cap: "United Airlines (UAL) Quarterly Return on Assets (ROA) (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p7 <- ggplot() +
+  # Add points for ROA data
+  geom_point(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = return_on_assets, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = return_on_assets, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Return on Assets for UAL (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p7)
+```
+### Return on Equity (ROE)
+
+UAL's Return on Equity (ROE) pattern closely follows that of ROA, underscoring the airline's ability to generate shareholder returns from its equity base. The significant dip during the pandemic years is indicative of the financial strain experienced, while the recovery in subsequent years reflects improved profitability and effective equity utilization.
+
+
+```{r}
+#| label: ual-roe
+#| fig.cap: "United Airlines (UAL) Quarterly Return on Equity (ROE) (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p8 <- ggplot() +
+  # Add points for ROE data
+  geom_point(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = return_on_common_equity, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = return_on_common_equity, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Return on Equity for UAL (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p8)
+```
+
 ## Summary
 
 In summary, United Airlines has demonstrated a robust recovery from the pandemic-induced downturn, marked by a strong rebound in revenue and a return to profitability. The airline's strategic focus on premium travel segments has paid off, enabling it to achieve healthy operating margins. However, the balance sheet remains highly leveraged, and the capital-intensive nature of the business continues to pressure free cash flow. Moving forward, UAL's ability to sustain operational cash generation while managing its debt levels will be critical to its long-term financial health and competitive positioning in the evolving airline industry.
