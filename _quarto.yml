@@ -42,7 +42,7 @@ book:
   page-footer: 
     background: light
     left: |
-      Copyright 2025, Ronak Shah @ CMO @ MSKCC
+      Copyright 2025, Ronak Shah @ Rutgers Buisness School
     right: |
       This book was built with <a href="https://quarto.org/">Quarto</a>. 
   page-navigation: true
