@@ -19,6 +19,7 @@ library(ggrepel)
 library(fmpapi)
 library(ggthemr)
 library(plotly)
+library(patchwork)
 ```
 ```{r, include=FALSE}
 #| label: skyw-load-data

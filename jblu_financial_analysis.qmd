@@ -19,6 +19,7 @@ library(ggrepel)
 library(fmpapi)
 library(ggthemr)
 library(plotly)
+library(patchwork)
 ```
 ```{r, include=FALSE}
 #| label: jblu-load-data
@@ -369,12 +370,11 @@ p7 <- ggplot() +
 ggplotly(p7)
 ```
 
-```{r, include=FALSE}
+```{r include=FALSE}
 #| label: jblu-asset-turnover
-#| fig.cap: "JetBlue (JBLU) Quarterly Total Asset Turnover (2020-2024)"
-#| echo: false
 #| message: false
 #| warning: false
+
 ggthemr("flat")
 p9 <- ggplot() +
   # Add points for Total Asset Turnover data
@@ -395,14 +395,13 @@ p9 <- ggplot() +
 
 ```
 
-```{r, include=FALSE}
+```{r include=FALSE}
 #| label: jblu-profit-margin
-#| fig.cap: "JetBlue (JBLU) Quarterly Profit Margin Ratio (2020-2024)"
-#| echo: false
 #| message: false
 #| warning: false
+
 ggthemr("flat")
-jblu10 <- ggplot() +
+p10 <- ggplot() +
   # Add points for Profit Margin Ratio data
   geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
              aes(x = year_quarter, y = profit_margin, color = symbol), 
@@ -434,7 +433,7 @@ The decomposition of ROA into Total Asset Turnover and Profit Margin provides in
 #| fig-height: 12
 #| fig-width: 15
 ggthemr("flat")
-jblu_roa_decomposition <- (p9 + jblu10) / p7 + 
+jblu_roa_decomposition <- (p9 + p10) / p7 + 
   plot_annotation(
     title = "ROA Decomposition for JBLU (2020 Q1 - 2025 Q2)",
     caption = "ROA = Total Asset Turnover × Profit Margin"
