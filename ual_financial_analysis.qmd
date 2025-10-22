@@ -19,6 +19,7 @@ library(ggrepel)
 library(fmpapi)
 library(ggthemr)
 library(plotly)
+library(patchwork)
 ```
 ```{r, include=FALSE}
 #| label: ual-load-data
@@ -301,7 +302,10 @@ ual_combined_statements <- ual_combined_statements |>
   mutate(
     asset_turnover = ifelse(total_assets == 0, 0, revenue / total_assets),
     inventory_turnover = ifelse(inventory == 0, 0, cost_of_revenue / inventory),
-    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables)
+    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables),
+    gross_margin = ifelse(revenue == 0, 0, gross_profit / revenue),
+    profit_margin = ifelse(revenue == 0, 0, (net_income + (interest_expense * (1-0.21))) / revenue),
+    after_tax_roe = ifelse(total_equity == 0, 0, net_income / total_equity),
   )
 ual_combined_statements <- ual_combined_statements %>%
   # Calculate average accounts receivable and average receivables turnover
@@ -334,6 +338,8 @@ ual_combined_statements <- ual_combined_statements %>%
   )
 ```
 
+::: {.panel-tabset}
+
 ### Return on Assets (ROA)
 
 UAL's Return on Assets (ROA) trajectory highlights the airline's efficiency in utilizing its asset base to generate profits. The negative ROA during the pandemic years reflects the severe operational challenges faced, while the positive rebound in 2022 and beyond indicates improved asset utilization as travel demand recovered.
@@ -364,6 +370,83 @@ p7 <- ggplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(p7)
 ```
+
+```{r, include=FALSE}
+#| label: ual-asset-turnover
+#| fig.cap: "United Airlines (UAL) Quarterly Total Asset Turnover (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p9 <- ggplot() +
+  # Add points for Total Asset Turnover data
+  geom_point(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = total_asset_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = total_asset_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = comma_format(accuracy = 0.01)) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Total Asset Turnover for UAL (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, include=FALSE}
+#| label: ual-profit-margin
+#| fig.cap: "United Airlines (UAL) Quarterly Profit Margin Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p10 <- ggplot() +
+  # Add points for Profit Margin Ratio data
+  geom_point(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = profit_margin, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = profit_margin, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Profit Margin Ratio for UAL (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### ROA = Total Asset Turnover × Profit Margin
+
+ROA decomposition illustrates how UAL's asset efficiency and profitability jointly influence its overall return on assets. The interplay between these two components highlights the airline's strategic focus on maximizing both revenue generation and cost management to enhance asset returns.
+
+```{r}
+#| label: ual-roa-decomposition
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: United Airlines (UAL) Quarterly ROA Decomposition (2020-2024)
+#| fig-height: 12
+#| fig-width: 15
+ggthemr("flat")
+ual_roa_decomposition <- (p9 + p10) / p7 + 
+  plot_annotation(
+    title = "ROA Decomposition for UAL (2020 Q1 - 2025 Q2)",
+    caption = "ROA = Total Asset Turnover × Profit Margin"
+  )
+ual_roa_decomposition
+
+```
+:::
+
+::: {.panel-tabset}
 ### Return on Equity (ROE)
 
 UAL's Return on Equity (ROE) pattern closely follows that of ROA, underscoring the airline's ability to generate shareholder returns from its equity base. The significant dip during the pandemic years is indicative of the financial strain experienced, while the recovery in subsequent years reflects improved profitability and effective equity utilization.
@@ -394,6 +477,81 @@ p8 <- ggplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(p8)
 ```
+
+```{r, include=FALSE}
+#| label: ual-capital-structure-leverage
+#| fig.cap: "United Airlines (UAL) Quarterly Capital Structure Leverage Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p11 <- ggplot() +
+  # Add points for Capital Structure Leverage Ratio data
+  geom_point(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = capital_structure_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = capital_structure_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = comma_format(accuracy = 0.1)) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Capital Structure Leverage Ratio for UAL (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, include=FALSE}
+#| label: ual-common-earnings-leverage
+#| fig.cap: "United Airlines (UAL) Quarterly Common Earnings Leverage Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p12 <- ggplot() +
+  # Add points for Common Earnings Leverage Ratio data
+  geom_point(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = common_earnings_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = ual_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = common_earnings_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Common Earnings Leverage Ratio for UAL (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### ROE = ROA × Capital Structure Leverage × Common Earnings Leverage
+
+Decomposing ROE into its constituent parts provides a nuanced understanding of how UAL generates returns for its shareholders. The interaction between operational efficiency (ROA), financial leverage (Capital Structure Leverage), and earnings quality (Common Earnings Leverage) reveals the multifaceted approach UAL employs to enhance shareholder value.
+
+
+```{r}
+#| label: ual-roe-decomposition
+#| fig.cap: "United Airlines (UAL) Quarterly ROE Decomposition (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 12
+#| fig-width: 20
+ggthemr("flat")
+ual_roe_decomposition <- (p7 + p11 + p12) / p8 + 
+  plot_annotation(
+    title = "ROE Decomposition for UAL (2020 Q1 - 2025 Q2)",
+    caption = "ROE = ROA × Capital Structure Leverage × Common Earnings Leverage"
+  )
+ual_roe_decomposition
+```
+:::
 
 ## Summary
 

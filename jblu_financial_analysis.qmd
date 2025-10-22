@@ -301,7 +301,10 @@ jblu_combined_statements <- jblu_combined_statements |>
   mutate(
     asset_turnover = ifelse(total_assets == 0, 0, revenue / total_assets),
     inventory_turnover = ifelse(inventory == 0, 0, cost_of_revenue / inventory),
-    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables)
+    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables),
+    gross_margin = ifelse(revenue == 0, 0, gross_profit / revenue),
+    profit_margin = ifelse(revenue == 0, 0, (net_income + (interest_expense * (1-0.21))) / revenue),
+    after_tax_roe = ifelse(total_equity == 0, 0, net_income / total_equity),
   )
 jblu_combined_statements <- jblu_combined_statements %>%
   # Calculate average accounts receivable and average receivables turnover
@@ -334,6 +337,8 @@ jblu_combined_statements <- jblu_combined_statements %>%
   )
 ```
 
+::: {.panel-tabset}
+
 ### Return on Assets (ROA)
 
 JBLU's Return on Assets (ROA) has been highly volatile from 2020 to 2024, reflecting the airline's struggle to generate consistent profits amid fluctuating demand and operational challenges. The ROA dipped into negative territory during the peak pandemic years, with only brief recoveries in between. This inconsistency highlights the difficulties JetBlue faces in efficiently utilizing its asset base to generate earnings.
@@ -363,6 +368,84 @@ p7 <- ggplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(p7)
 ```
+
+```{r, include=FALSE}
+#| label: jblu-asset-turnover
+#| fig.cap: "JetBlue (JBLU) Quarterly Total Asset Turnover (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p9 <- ggplot() +
+  # Add points for Total Asset Turnover data
+  geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = total_asset_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = total_asset_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = comma_format(accuracy = 0.01)) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Total Asset Turnover for JBLU (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, include=FALSE}
+#| label: jblu-profit-margin
+#| fig.cap: "JetBlue (JBLU) Quarterly Profit Margin Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+jblu10 <- ggplot() +
+  # Add points for Profit Margin Ratio data
+  geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = profit_margin, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = profit_margin, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Profit Margin Ratio for JBLU (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### ROA = Total Asset Turnover × Profit Margin
+
+The decomposition of ROA into Total Asset Turnover and Profit Margin provides insights into the drivers behind JetBlue's asset efficiency. The airline's low and fluctuating profit margins have been a significant drag on ROA, despite relatively stable asset turnover ratios. This indicates that while JetBlue can generate revenue from its assets, its ability to convert that revenue into profit remains a critical challenge.
+
+```{r}
+#| label: jblu-roa-decomposition
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: JetBlue (JBLU) Quarterly ROA Decomposition (2020-2024)
+#| fig-height: 12
+#| fig-width: 15
+ggthemr("flat")
+jblu_roa_decomposition <- (p9 + jblu10) / p7 + 
+  plot_annotation(
+    title = "ROA Decomposition for JBLU (2020 Q1 - 2025 Q2)",
+    caption = "ROA = Total Asset Turnover × Profit Margin"
+  )
+jblu_roa_decomposition
+
+```
+
+:::
+
+::: {.panel-tabset}
 
 ### Return on Equity (ROE)
 
@@ -394,6 +477,81 @@ p8 <- ggplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(p8)
 ```
+
+```{r, include=FALSE}
+#| label: jblu-capital-structure-leverage
+#| fig.cap: "JetBlue (JBLU) Quarterly Capital Structure Leverage Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p11 <- ggplot() +
+  # Add points for Capital Structure Leverage Ratio data
+  geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = capital_structure_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = capital_structure_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = comma_format(accuracy = 0.1)) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Capital Structure Leverage Ratio for JBLU (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, include=FALSE}
+#| label: jblu-common-earnings-leverage
+#| fig.cap: "JetBlue (JBLU) Quarterly Common Earnings Leverage Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p12 <- ggplot() +
+  # Add points for Common Earnings Leverage Ratio data
+  geom_point(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = common_earnings_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = jblu_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = common_earnings_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Common Earnings Leverage Ratio for JBLU (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### ROE = ROA × Capital Structure Leverage × Common Earnings Leverage
+
+The decomposition of ROE into its constituent components reveals the multifaceted challenges JetBlue faces in delivering shareholder value. The airline's low ROA, combined with high leverage ratios, has amplified the negative impact on ROE. This analysis underscores the critical need for JetBlue to improve its operational efficiency and profitability while managing its capital structure prudently to enhance returns for equity investors.
+
+
+```{r}
+#| label: jblu-roe-decomposition
+#| fig.cap: "JetBlue (JBLU) Quarterly ROE Decomposition (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 12
+#| fig-width: 20
+ggthemr("flat")
+jblu_roe_decomposition <- (p7 + p11 + p12) / p8 + 
+  plot_annotation(
+    title = "ROE Decomposition for JBLU (2020 Q1 - 2025 Q2)",
+    caption = "ROE = ROA × Capital Structure Leverage × Common Earnings Leverage"
+  )
+jblu_roe_decomposition
+```
+:::
 
 ## Summary
 

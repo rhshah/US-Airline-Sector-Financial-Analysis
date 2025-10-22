@@ -301,7 +301,10 @@ skyw_combined_statements <- skyw_combined_statements |>
   mutate(
     asset_turnover = ifelse(total_assets == 0, 0, revenue / total_assets),
     inventory_turnover = ifelse(inventory == 0, 0, cost_of_revenue / inventory),
-    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables)
+    receivables_turnover = ifelse(accounts_receivables == 0, 0, revenue / accounts_receivables),
+    gross_margin = ifelse(revenue == 0, 0, gross_profit / revenue),
+    profit_margin = ifelse(revenue == 0, 0, (net_income + (interest_expense * (1-0.21))) / revenue),
+    after_tax_roe = ifelse(total_equity == 0, 0, net_income / total_equity),
   )
 skyw_combined_statements <- skyw_combined_statements %>%
   # Calculate average accounts receivable and average receivables turnover
@@ -333,6 +336,7 @@ skyw_combined_statements <- skyw_combined_statements %>%
     average_receivables_turnover = ifelse (average_accounts_receivable == 0, 0, revenue / average_accounts_receivable)
   )
 ```
+::: {.panel-tabset}
 
 ### Return on Assets (ROA)
 
@@ -364,6 +368,83 @@ p7 <- ggplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(p7)
 ```
+
+```{r, include=FALSE}
+#| label: skyw-asset-turnover
+#| fig.cap: "SkyWest (SKYW) Quarterly Total Asset Turnover (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p9 <- ggplot() +
+  # Add points for Total Asset Turnover data
+  geom_point(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = total_asset_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = total_asset_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = comma_format(accuracy = 0.01)) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Total Asset Turnover for SKYW (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, include=FALSE}
+#| label: skyw-profit-margin
+#| fig.cap: "SkyWest (SKYW) Quarterly Profit Margin Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p10 <- ggplot() +
+  # Add points for Profit Margin Ratio data
+  geom_point(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = profit_margin, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = profit_margin, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Profit Margin Ratio for SKYW (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### ROA = Total Asset Turnover × Profit Margin
+
+ROA decomposition provides valuable insights into the drivers of SkyWest's asset efficiency. By breaking down ROA into Total Asset Turnover and Profit Margin, we can better understand how effectively the company utilizes its assets to generate revenue and how efficiently it converts that revenue into profit. This analysis highlights the dual importance of operational efficiency and profitability in enhancing SkyWest's overall return on assets.
+
+```{r}
+#| label: skyw-roa-decomposition
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: SkyWest (SKYW) Quarterly ROA Decomposition (2020-2024)
+#| fig-height: 12
+#| fig-width: 15
+ggthemr("flat")
+skyw_roa_decomposition <- (p9 + p10) / p7 + 
+  plot_annotation(
+    title = "ROA Decomposition for SKYW (2020 Q1 - 2025 Q2)",
+    caption = "ROA = Total Asset Turnover × Profit Margin"
+  )
+skyw_roa_decomposition
+
+```
+:::
+
+::: {.panel-tabset}
 ### Return on Equity (ROE)
 
 SKYW's Return on Equity (ROE) has also demonstrated a positive trajectory from 2020 to 2024, highlighting the company's ability to generate profits from its shareholders' equity. ROE is a critical measure of financial performance, indicating how effectively SkyWest is using the capital invested by its shareholders to produce earnings. The upward trend in ROE suggests that SkyWest has been successful in enhancing shareholder value through efficient management and profitable operations, even in the face of industry challenges.
@@ -395,6 +476,80 @@ p8 <- ggplot() +
 ggplotly(p8)
 ```
 
+```{r, include=FALSE}
+#| label: skyw-capital-structure-leverage
+#| fig.cap: "SkyWest (SKYW) Quarterly Capital Structure Leverage Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p11 <- ggplot() +
+  # Add points for Capital Structure Leverage Ratio data
+  geom_point(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = capital_structure_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = capital_structure_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = comma_format(accuracy = 0.1)) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Capital Structure Leverage Ratio for SKYW (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r, include=FALSE}
+#| label: skyw-common-earnings-leverage
+#| fig.cap: "SkyWest (SKYW) Quarterly Common Earnings Leverage Ratio (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+ggthemr("flat")
+p12 <- ggplot() +
+  # Add points for Common Earnings Leverage Ratio data
+  geom_point(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = common_earnings_leverage_ratio, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = skyw_combined_statements |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = common_earnings_leverage_ratio, group = symbol, color = symbol), 
+            linewidth = 1) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) + 
+  scale_y_continuous(labels = percent) + 
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Common Earnings Leverage Ratio for SKYW (2020 Q1 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+### ROE = ROA × Capital Structure Leverage × Common Earnings Leverage
+
+Decomposing ROE into its components provides valuable insights into the drivers of SkyWest's shareholder returns. The analysis reveals how the company's operational efficiency (ROA), financial leverage (Capital Structure Leverage), and earnings quality (Common Earnings Leverage) collectively contribute to its overall return on equity. This decomposition highlights the multifaceted nature of SkyWest's financial performance and underscores the importance of each component in enhancing shareholder value.
+
+
+```{r}
+#| label: skyw-roe-decomposition
+#| fig.cap: "SkyWest (SKYW) Quarterly ROE Decomposition (2020-2024)"
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 12
+#| fig-width: 20
+ggthemr("flat")
+skyw_roe_decomposition <- (p7 + p11 + p12) / p8 + 
+  plot_annotation(
+    title = "ROE Decomposition for SKYW (2020 Q1 - 2025 Q2)",
+    caption = "ROE = ROA × Capital Structure Leverage × Common Earnings Leverage"
+  )
+skyw_roe_decomposition
+```
+:::
 ## Summary
 
 In summary, SkyWest's financial analysis from 2020 to 2024 reveals a company that has not only weathered the unprecedented challenges of the pandemic but has emerged stronger and more resilient. Its unique business model as a regional carrier, combined with prudent financial management, has resulted in a robust balance sheet, consistent profitability, and strong cash flow generation. SkyWest's low leverage, stable margins, and ability to generate free cash flow position it well for future growth and stability in an industry that remains volatile and competitive. This analysis underscores SkyWest as a standout performer in the airline sector, demonstrating that strategic focus and operational efficiency can yield significant advantages even in challenging times.
