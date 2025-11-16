@@ -9,3 +9,11 @@ This report leverages a variety of data sources and analytical tools to provide 
 -   Tidyverse R Package: <https://www.tidyverse.org/>
 -   Tidyfinance R Package: <https://www.tidy-finance.org/r/financial-statement-analysis.html>
 -   ggthemr R Package
+-   Bureau of Transportation Statistics. (April 15, 2025). Domestic market share of leading U.S. airlines in 2024 \[Graph\]. In *Statista*. Retrieved November 15, 2025, from <https://www.statista.com/statistics/250577/domestic-market-share-of-leading-us-airlines/>
+-   Statista. (September 5, 2025). Leading airline groups worldwide in 2024, based on passengers (in millions) \[Graph\]. In *Statista*. Retrieved November 15, 2025, from <https://www.statista.com/statistics/269617/top-10-airlines-worldwide-by-number-of-passengers/>
+-   Yahoo Finance. <https://tinyurl.com/26sdyzky>
+-   Simply Wall. <https://simplywall.st/stocks/us/transportation/nasdaq-ual/united-airlines-holdings/health>
+-   Jet blue market share : <https://www.transtats.bts.gov/>
+-   NEA Cancelled . <https://www.reuters.com/business/american-airlines-sues-jetblue-scraps-partnership-talks-2025-04-29/>
+-   Jetblue recovery pan : <https://www.travelweekly.com/Travel-News/Airline-News/JetBlue-struggles-to-regain-profitability-as-demand-declines>
+-   Jet blue potential earnings 2027: <https://finance.yahoo.com/news/jetblue-reports-second-quarter-operating-110000180.html>
