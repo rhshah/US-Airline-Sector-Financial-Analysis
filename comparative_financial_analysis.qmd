@@ -6,7 +6,7 @@ title: "Comparative Financial Analysis"
 
 Here we compare financial performance of United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW). This report provides a detailed comparative financial analysis of three distinct players in the U.S. airline industry: legacy carrier United Airlines (UAL), low-cost carrier JetBlue (JBLU), and regional operator SkyWest (SKW). Utilizing financial data from the beginning of 2020 through the end of fiscal year 2024, this study examines the post-pandemic recovery, financial health, profitability, and operational efficiency of each company. The strategic importance of this analysis lies in understanding the divergent recovery paths and competitive positioning that have emerged in a sector profoundly reshaped by recent global events.
 
-```{r setup, include=FALSE}
+```{r setup}
 #| echo: false
 #| message: false
 #| warning: false
@@ -21,10 +21,11 @@ library(ggthemr)
 library(plotly)
 ```
 
-```{r get data, include=FALSE}
+```{r get-data}
 #| echo: false
 #| message: false
 #| warning: false
+#| include: false
 # Define the airline tickers
 airlines <- data.frame(
   Airline = c(
@@ -74,10 +75,11 @@ cash_flow_statements <- airlines$Ticker |>
   )
 ```
 
-```{r common-size-statemetns, include=FALSE}
+```{r common-size-statemetns}
 #| echo: false
 #| message: false
 #| warning: false
+#| include: false
 common_size_balance_sheet <- balance_sheet_statements %>%
   mutate(
     cash_and_cash_equivalents = (cash_and_cash_equivalents / total_assets) * 100,
@@ -183,6 +185,20 @@ common_size_cash_flow_statement <- cash_flow_statements %>%
     free_cash_flow = (free_cash_flow / net_income) * 100
   )
 
+```
+
+```{r liquidity-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+#| include: false
+balance_sheet_statements <- balance_sheet_statements |> 
+  mutate(
+    current_ratio = total_current_assets / total_assets,
+    quick_ratio = (total_current_assets - inventory) / total_current_liabilities,
+    cash_ratio = cash_and_cash_equivalents / total_current_liabilities,
+    label = if_else(symbol %in% airline_tickers, symbol, NA),
+  )
 ```
 
 ```{r leverage-ratios}
