@@ -9,7 +9,7 @@ execute:
 book:
   title: "US Airline Sector Financial Analysis"
   subtitle: "An In-depth Look at Financial Metrics and Trends"
-  author: "Robert, Noberto, Riccardo & Ronak"
+  author: "Riccardo Bronzini, Noberto Curitomai, Robert DeLintt & Ronak Shah"
   date: "2025-10-15"
   bread-crumbs: false
   repo-url: https://github.com/rhshah/US-Airline-Sector-Financial-Analysis
