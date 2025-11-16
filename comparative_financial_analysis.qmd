@@ -249,6 +249,9 @@ income_statements <- income_statements |>
   )
 ```
 ## Leverage Ratios
+
+The leverage ratios analyzed include Debt-to-Asset and Debt-to-Equity ratios. The Debt-to-Asset ratio measures the proportion of a company's assets that are financed through debt, indicating the level of financial risk. A higher ratio suggests greater reliance on debt financing, which can increase vulnerability to economic downturns. The Debt-to-Equity ratio compares a company's total debt to its shareholders' equity, providing insights into the company's capital structure and financial leverage. A higher Debt-to-Equity ratio indicates that a company is using more debt relative to equity to finance its operations, which can amplify returns but also increases financial risk. In the charts below, we analyze the Debt-to-Asset and Debt-to-Equity ratios for United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW) from the fourth quarter of 2019 to the second quarter of 2025. We observe how these airlines have managed their debt levels in response to industry challenges, particularly in the context of the COVID-19 pandemic and its aftermath. SkyWest (SKW) consistently maintains lower leverage ratios compared to UAL and JBLU, indicating a more conservative approach to debt financing. JetBlue (JBLU) shows a gradual increase in leverage ratios, reflecting its growth strategies post-pandemic. United Airlines (UAL) exhibits fluctuations in leverage ratios, highlighting efforts to balance debt management with operational needs during recovery phases.
+
 ```{r plot-leverage-ratios}
 #| echo: false
 #| message: false
@@ -356,12 +359,14 @@ income_statements |>
 #| warning: false
 combined_statements <- balance_sheet_statements |> 
   select(symbol, year_quarter, label, current_ratio, quick_ratio, cash_ratio,
-         debt_to_equity, debt_to_asset, total_assets, total_equity, net_receivables) |> 
+         debt_to_equity, debt_to_asset, total_assets, total_liabilities,  
+         total_equity, net_receivables, total_current_assets, 
+         total_current_liabilities,retained_earnings) |> 
   left_join(
     income_statements |> 
       select(symbol, year_quarter, interest_coverage, revenue, cost_of_revenue,
              selling_general_and_administrative_expenses, interest_expense,
-             gross_profit, net_income),
+             gross_profit, net_income, operating_expenses, ebitda, depreciation_and_amortization),
     join_by(symbol, year_quarter)
   ) |> 
   left_join(
@@ -406,7 +411,10 @@ combined_statements <- combined_statements %>%
     average_receivables_turnover = ifelse (average_accounts_receivable == 0, 0, revenue / average_accounts_receivable)
   )
 ```
-### ROA ROE
+### Return on Assets and Return on Equity
+
+The return on assets (ROA) and return on equity (ROE) ratios are key indicators of a company's profitability and efficiency in utilizing its assets and equity to generate earnings. ROA measures how effectively a company uses its assets to produce net income, while ROE assesses the profitability relative to shareholders' equity. In the charts below, we analyze the ROA and ROE trends for United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW) from the fourth quarter of 2019 to the second quarter of 2025. We observe how these airlines have navigated the challenges of the airline industry, particularly in the context of the COVID-19 pandemic and its aftermath. SkyWest (SKW) consistently demonstrates higher ROA and ROE compared to UAL and JBLU, indicating a more efficient use of assets and equity in generating profits. This analysis provides insights into the financial health and operational efficiency of these airlines over the specified period. JetBlue (JBLU) shows a gradual improvement in both ROA and ROE, reflecting its recovery and growth strategies post-pandemic. United Airlines (UAL), while showing fluctuations, indicates efforts to stabilize and enhance profitability through various operational adjustments.
+
 ```{r plot-roa-roe}
 #| echo: false
 #| message: false
@@ -451,6 +459,9 @@ p <- ggplot() +
 ggplotly(p)
 ```
 ### Capital Structure Leverage and Common Earnings Leverage
+
+The capital structure leverage ratio and common earnings leverage ratio are important metrics for assessing a company's financial leverage and risk profile. The capital structure leverage ratio indicates the extent to which a company utilizes debt in its capital structure, while the common earnings leverage ratio measures the sensitivity of a company's earnings to changes in its operating income. In the charts below, we analyze these leverage ratios for United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW) from the fourth quarter of 2019 to the second quarter of 2025. We observe how these airlines have managed their financial leverage in response to industry challenges, particularly in the context of the COVID-19 pandemic and its aftermath. SkyWest (SKW) consistently maintains lower leverage ratios compared to UAL and JBLU, indicating a more conservative approach to debt financing. JetBlue (JBLU) shows a gradual increase in leverage ratios, reflecting its growth strategies post-pandemic. United Airlines (UAL) exhibits fluctuations in leverage ratios, highlighting efforts to balance debt management with operational needs during recovery phases.
+
 ```{r plot-capital-structure-leverage-common-earnings-leverage}
 #| echo: false
 #| message: false
@@ -495,6 +506,9 @@ ggplotly(p)
 ```
 
 ### Efficiency Ratios Over Time
+
+The efficiency ratios analyzed include Asset Turnover, Inventory Turnover, and Receivables Turnover. Asset Turnover measures how effectively a company utilizes its assets to generate revenue. Inventory Turnover assesses how efficiently inventory is managed and sold, while Receivables Turnover evaluates the effectiveness of credit and collection policies. These ratios provide insights into operational efficiency and resource management. In the charts below, we analyze these efficiency ratios for United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW) from the fourth quarter of 2019 to the second quarter of 2025. We observe how these airlines have optimized their operations in response to industry challenges, particularly in the context of the COVID-19 pandemic and its aftermath. SkyWest (SKW) consistently demonstrates higher efficiency ratios compared to UAL and JBLU, indicating more effective asset and resource management. JetBlue (JBLU) shows improvements in efficiency ratios, reflecting its recovery and growth strategies post-pandemic. United Airlines (UAL) exhibits fluctuations in efficiency ratios, highlighting efforts to enhance operational performance during recovery phases.
+
 ```{r plot-efficiency-ratios}
 #| echo: false
 #| message: false
@@ -567,6 +581,9 @@ combined_statements <- combined_statements |>
   )
 ```
 ### Profitability Ratios Over Time
+
+The profitability ratios analyzed include Gross Margin, Profit Margin, and After-Tax Return on Equity (ROE). Gross Margin indicates the percentage of revenue that exceeds the cost of goods sold, reflecting the efficiency of production and pricing strategies. Profit Margin measures the overall profitability by showing the percentage of revenue that remains as profit after all expenses, taxes, and costs have been deducted. After-Tax ROE assesses how effectively a company generates profit from its shareholders' equity after accounting for taxes, providing insight into financial performance and shareholder value creation. These ratios are crucial for evaluating the financial health and operational efficiency of companies. In the charts below, we analyze these profitability ratios for United Airlines (UAL), JetBlue (JBLU), and SkyWest (SKW) from the fourth quarter of 2019 to the second quarter of 2025. We observe how these airlines have managed their profitability in response to industry challenges, particularly in the context of the COVID-19 pandemic and its aftermath. SkyWest (SKW) consistently demonstrates higher profitability ratios compared to UAL and JBLU, indicating more effective cost management and revenue generation. JetBlue (JBLU) shows improvements in profitability ratios, reflecting its recovery and growth strategies post-pandemic. United Airlines (UAL) exhibits fluctuations in profitability ratios, highlighting efforts to enhance financial performance during recovery phases.
+
 ```{r plot-profitability-ratios}
 #| echo: false
 #| message: false
@@ -630,6 +647,8 @@ ggplotly(p)
 ```
 
 ## Common Size Analysis - Income Statement
+
+The common-size analysis standardizes financial statements by expressing each line item as a percentage of a base figure, allowing for easier comparison across companies and time periods. In the income statement, each item is expressed as a percentage of total revenue. The net income ratio, gross profit ratio, and operating income ratio are key metrics derived from this analysis. The net income ratio indicates the percentage of revenue that remains as profit after all expenses, taxes, and costs have been deducted. A higher net income ratio suggests better profitability and efficiency in managing expenses relative to revenue. The gross profit ratio reflects the percentage of revenue remaining after accounting for the cost of goods sold, indicating how efficiently a company produces and sells its products. The operating income ratio shows the percentage of revenue left after covering operating expenses, providing insight into the company's operational efficiency. By analyzing these ratios over time and across different airlines, stakeholders can assess financial health, operational performance, and profitability trends within the airline industry.
 
 ```{r common-size-analysis-data, include=FALSE}
 #| echo: false
@@ -716,6 +735,9 @@ ggplotly(p_margin)
 
 ## Common Size Analysis - Balance Sheet
 
+The common-size analysis of the balance sheet provides insights into a company's financial structure by expressing each line item as a percentage of total assets. This standardization allows for easier comparison across companies and time periods. The capital structure, asset composition, and liquidity ratios are key components of this analysis. The capital structure illustrates the proportion of liabilities, equity, and cash in relation to total assets, highlighting how a company finances its operations. The asset composition reveals the distribution of different asset types, such as cash, property, and intangible assets, providing insights into resource allocation. By analyzing these ratios over time and across different airlines, stakeholders can assess financial health, operational efficiency, and strategic positioning within the airline industry.
+
+
 ::: {.panel-tabset} 
 
 ### Capital Structure: Liabilities, Equity and Cash
@@ -740,6 +762,8 @@ ggplotly(p_cap_struct)
 ```
 
 ### Asset Composition (% of Total Assets)
+
+
 ```{r plot-asset-composition}
 #| echo: false
 #| message: false
@@ -764,9 +788,12 @@ ggplotly(p_asset_comp)
 
 ## Common Size Analysis - Cash Flow Statement
 
+The cash flow statement common size analysis provides insights into how effectively a company generates cash from its operations, invests in assets, and finances its activities. The Cash Flow Quality, Cash Flow Composition, and Free Cash Flow ratios are key indicators of financial health and operational efficiency. The Cash Flow Quality ratio measures the proportion of net income that is supported by cash flow from operations. The Cash Flow Composition chart illustrates the proportion of cash flows from operating, investing, and financing activities as a percentage of total cash inflows. Free Cash Flow indicates the cash available after capital expenditures, which is crucial for growth and shareholder returns.
+
 ::: {.panel-tabset}
 
 ### Cash Flow Quality (CFO/Net Income)
+
 
 ```{r plot-cash-flow-quality}
 #| echo: false
@@ -786,6 +813,7 @@ ggplotly(p_cf_quality)
 ```
 
 ### Cash Flow Composition (Operating, Investing, Financing)
+
 
 ```{r plot-cash-flow-composition}
 #| echo: false
@@ -831,6 +859,9 @@ ggplotly(p_fcf)
 
 
 ## Net Income Ratio by year and airline
+
+The heatmap below visualizes the average Net Income Ratio for each airline across different years, providing insights into their profitability trends over time.
+
 ```{r net-income-ratio-by-year-and-airline}
 #| echo: false
 #| message: false
@@ -851,3 +882,142 @@ p_heatmap <- ggplot(heatmap_df, aes(x = year, y = symbol, fill = net_income_rati
 ggplotly(p_heatmap)
 ```
 
+## Bankruptcy Prediction Model
+
+```{r altman-z-score-service-industry}
+#| echo: false
+#| message: false
+#| warning: false
+#| include: false
+altlman_z_scores_si <- combined_statements |> 
+  mutate(
+    altman_z_score_si = 6.56 * ( (total_current_assets - total_current_liabilities) / total_assets ) +
+      3.26 * ( retained_earnings / total_assets ) +
+      6.72 * ( (ebitda - depreciation_and_amortization) / total_assets ) +
+      1.05 * ( total_equity / total_liabilities )
+  )
+```
+### Altman Z-Score for Service Industry Over Time
+
+The Altman Z-Score is a widely used metric for predicting the likelihood of bankruptcy. A score above 2.6 indicates a low risk of bankruptcy, while a score below 1.1 suggests a high risk.
+```{r plot-altman-z-score}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-cap: "Altman Z-Score - Service Industry for for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"
+ggthemr("fresh")
+p_z_score <- ggplot(altlman_z_scores_si |> filter(symbol %in% airline_tickers),
+       aes(x = year_quarter, y = altman_z_score_si, color = symbol)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  geom_hline(yintercept = 2.6, color = "green", linetype = "dashed", size = 1) + # Green line
+  geom_hline(yintercept = 1.10, color = "red", linetype = "dashed", size = 1) +   # Red line
+
+  labs(title = "Altman Z-Score for Service Industry Over Time",
+       x = "Quarter", y = "Altman Z-Score - Service Industry", color = "Airline") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p_z_score)
+```
+```{r get-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+#| include: false
+ratios <- airlines$Ticker |> 
+  map_df(
+    \(x) fmp_get(resource = "ratios", symbol = x, params = params)
+  )
+ratios  <- ratios  %>%
+  mutate(year_quarter = paste(calendar_year, period, sep = " ")) %>%
+  mutate(year_quarter = factor(year_quarter, 
+                               levels = unique(year_quarter[order(calendar_year, 
+                                                                   match(period, c("Q1", "Q2", "Q3", "Q4")))])))
+
+combined_statements_with_ratios <- balance_sheet_statements |> 
+  left_join(
+    income_statements,
+    join_by(symbol, year_quarter)
+  ) |> 
+  left_join(
+    cash_flow_statements,
+     join_by(symbol, year_quarter)
+  ) |>
+  left_join(
+    ratios, 
+     join_by(symbol, year_quarter)
+  )
+```
+
+## Operating Leverage Ratios
+```{r operating-leverage-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+#| include: false
+combined_statements_with_ratios <- combined_statements_with_ratios |> 
+  mutate(
+    operating_leverage = ifelse(ebitda == 0, 0, (revenue - cost_of_revenue) / ebitda),
+    fixed_asset_turnover = ifelse(property_plant_equipment_net == 0, 0, revenue / property_plant_equipment_net),
+    working_capital_turnover = ifelse( (total_current_assets - total_current_liabilities) == 0, 0, revenue / (total_current_assets - total_current_liabilities)),
+  )
+```
+### Operating Leverage Over Time
+
+These ratios help assess how efficiently a company utilizes its fixed assets and working capital to generate revenue.
+
+```{r plot-operating-leverage-ratios}
+#| echo: false
+#| message: false
+#| warning: false
+##| fig-cap: ["Operating Leverage for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Fixed Asset Turnover for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)", "Working Capital Turnover for UAL, JBLU and SKYW (2019 Q4 - 2025 Q2)"]
+#| layout-ncol: 3
+ggthemr("fresh")
+# Create the plot
+p1 <- ggplot() +
+  # Add points for operating leverage data
+  geom_point(data = combined_statements_with_ratios |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = operating_leverage, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements_with_ratios |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = operating_leverage, group = symbol, color = symbol), 
+            linewidth = 1) +
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Operating Leverage for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p1)
+# Create the plot
+p2 <- ggplot() +
+  # Add points for fixed asset turnover data
+  geom_point(data = combined_statements_with_ratios |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = fixed_asset_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements_with_ratios |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = fixed_asset_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Fixed Asset Turnover for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p2)
+# Create the plot
+p3 <- ggplot() +
+  # Add points for working capital turnover data
+  geom_point(data = combined_statements_with_ratios |> filter(symbol %in% airline_tickers),
+             aes(x = year_quarter, y = working_capital_turnover, color = symbol), 
+             size = 2) +
+  # Add lines connecting the quarters for each year
+  geom_line(data = combined_statements_with_ratios |> filter(symbol %in% airline_tickers),
+            aes(x = year_quarter, y = working_capital_turnover, group = symbol, color = symbol), 
+            linewidth = 1) +
+  labs(
+    x = "Year & Quarter", y = NULL, color = NULL,
+    title = "Working Capital Turnover for UAL, JBLU, and SKYW (2019 Q4 - 2025 Q2)"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(p3)
+```
