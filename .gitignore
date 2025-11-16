@@ -9,3 +9,4 @@
 
 .DS_Store
 .Rproj
+**/*.quarto_ipynb

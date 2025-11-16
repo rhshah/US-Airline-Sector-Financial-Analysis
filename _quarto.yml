@@ -61,8 +61,9 @@ format:
     toc: true
     toc-title: "US Airline Sector Financial Analysis"
     highlight-style: pygments
-    embed-resources: true
-    standalone: true
+    embed-resources: false
+    lib_dir: libs
+    standalone: false
     code-fold: true
     html-math-method: katex
     link_target: _self
@@ -73,5 +74,3 @@ format:
     comments:
       hypothesis: 
         theme: clean
-post-render:
-  - node minify-html.js
