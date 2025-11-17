@@ -29,6 +29,34 @@ The following table offers a high-level summary of each airline's performance pr
 
 : High-level summary of each airline's performance
 
+
+## Video Summary
+
+The video below provides a concise summary of the key insights from this analysis.
+
+We made this using NotebookLM by Google and thought it would be interesting to share.
+
+There are two flavors of it one with only our report as the source and one with report and additional graphs and data.
+
+### Video summary (report as the only source)
+
+::: {=html}
+<iframe width="560" height="315"
+    src="https://drive.google.com/file/d/1x9hVKlXo93zLBRdp3u8pHbQLVHazETmc/preview"
+    allow="autoplay; encrypted-media" allowfullscreen>
+</iframe>
+:::
+
+### Video summary (report + additional data and graphs)
+
+::: {=html}
+<iframe width="560" height="315"
+    src="https://drive.google.com/file/d/1oCLcfIKFVxkXtqjhYAl7M0fbs16Y3IWd/preview"
+    allow="autoplay; encrypted-media" allowfullscreen>
+</iframe>
+:::
+
 ## Conclusion
 
 In conclusion, the U.S. airline sector presents a landscape of varied financial fortitude. United Airlines has successfully leveraged its scale to drive a powerful earnings recovery. JetBlue faces significant headwinds in its pursuit of sustainable profitability and balance sheet repair. SkyWest, with its distinct regional operating model, has emerged from the turbulent five-year period with the most durable and well-positioned financial structure, setting the stage for a stable long-term outlook.
+
