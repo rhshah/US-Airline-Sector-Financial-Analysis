@@ -70,11 +70,21 @@
     ]
   },
   {
+    "objectID": "executive_summary.html#video-summary",
+    "href": "executive_summary.html#video-summary",
+    "title": "3  Executive Summary",
+    "section": "3.3 Video Summary",
+    "text": "3.3 Video Summary\nThe video below provides a concise summary of the key insights from this analysis.\nWe made this using NotebookLM by Google and thought it would be interesting to share.\nThere are two flavors of it one with only our report as the source and one with report and additional graphs and data.\n\n3.3.1 Video summary (report as the only source)\n\n\n\n\n\n\n3.3.2 Video summary (report + additional data and graphs)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Executive Summary</span>"
+    ]
+  },
+  {
     "objectID": "executive_summary.html#conclusion",
     "href": "executive_summary.html#conclusion",
     "title": "3  Executive Summary",
-    "section": "3.3 Conclusion",
-    "text": "3.3 Conclusion\nIn conclusion, the U.S. airline sector presents a landscape of varied financial fortitude. United Airlines has successfully leveraged its scale to drive a powerful earnings recovery. JetBlue faces significant headwinds in its pursuit of sustainable profitability and balance sheet repair. SkyWest, with its distinct regional operating model, has emerged from the turbulent five-year period with the most durable and well-positioned financial structure, setting the stage for a stable long-term outlook.",
+    "section": "3.4 Conclusion",
+    "text": "3.4 Conclusion\nIn conclusion, the U.S. airline sector presents a landscape of varied financial fortitude. United Airlines has successfully leveraged its scale to drive a powerful earnings recovery. JetBlue faces significant headwinds in its pursuit of sustainable profitability and balance sheet repair. SkyWest, with its distinct regional operating model, has emerged from the turbulent five-year period with the most durable and well-positioned financial structure, setting the stage for a stable long-term outlook.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Executive Summary</span>"
     ]
